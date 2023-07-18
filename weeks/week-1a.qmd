@@ -1,0 +1,292 @@
+---
+title: "Introduction to Python Programming"
+code-copy: true
+code-line-numbers: true
+tidy: true
+---
+
+## Learning objectives
+
+-   understand the basics of Python programming
+
+-   Understand data types and objects
+
+-   understand Python functions
+
+## Reading
+
+-   
+
+## Basics of Python
+
+In the previous section, we showed the layout of RStudio. For this lesson, you will write all the code in the scripts/source and see the output in the console. To comment on the code, you will use the hashtag (`#`) to tell R not to execute the line as a code.
+
+R can be used as a calculator:
+
+```{python R calculator}
+#| results: asis
+print(4 + 7) 
+
+print(9 * 6) 
+
+```
+
+### Arithmetic Operators
+
+| Description    | Operator | Example |
+|----------------|----------|---------|
+| Addition       | \+       | 1 + 3   |
+| Subtract       | \-       | 90 - 5  |
+| Multiplication | \*       | 6 \* 7  |
+| Exponentiation | **       | 3 \^ 6  |
+| Division       | /        | 54 / 7  |
+
+
+Type in and run the above examples in the script or console. 
+
+### Assigning variables 
+
+Notice that we have been running previous codes without assigning them to a variable. We can assign anything to a variable (`=`); this can be a plot, a variable, a table, etc. 
+
+Say we ages of two individuals: Thembi's age is 30 and Sipho's age is 20. You can assign their ages to a variable:
+
+```{python Assigning}
+thembi_age = 30
+
+sipho_age = 20
+```
+
+You can use `print()` function to get the results
+
+```{python}
+print(thembi_age)
+
+print(sipho_age)
+```
+
+Because you have stored/assigned these into variables, you can calculate, let's say, total, differences, multiplication, etc. Get the sum of ages:
+
+```{python}
+sipho_age + thembi_age
+```
+
+Get age differences:
+
+```{python}
+
+thembi_age - sipho_age
+```
+
+Multiply these ages:
+
+```{python}
+thembi_age * sipho_age
+```
+
+Basically, we have crated variables: `sipho_age` and `thembi_age`, and stored their ages in numbers there. **always remember this**:
+
+- a variable name is case sensitive: if you have named it `sipho_age`, when you type `Sipho_age` there will be an error:
+
+```{python}
+#| error: true
+print(Sipho_age)
+```
+
+
+### Data types in Python
+
+While there many data types in Python, in this course, we will focus on the most common: 
+
+There 3 basic data types in R
+
+- **numeric**: 
+    - int: integers eg. (1, 2, 6, 90)
+    - float: with decimal e.g. (1.2, 5.3, 8.4)
+
+- **string**: `str`. This is text data, for axample, "My name is Aubrey"
+
+- **boolean**: `bool`. TRUE/FALSE
+
+
+#### Strings
+
+Strings are character data types, alwways surrounded by quoates: either single quotes (`''`) or double quotes (`""`)
+
+
+Example of a **string**  variables:
+
+```{python characters}
+river = "Tugela river"
+
+print(river)
+```
+
+
+```{python}
+country  = "South Africa"
+
+print(country)
+```
+
+
+
+Notice that a string need to be surrounded by ("") every time, otherwise Python will return an error
+
+
+```{python}
+#| error: true
+
+river = Tugela_river
+```
+
+There are various basic analysis we can apply to string. For example, you may add two string:
+
+```{python}
+name = "Peter"
+
+surname = "Zulu"
+
+### Add to strings
+
+print(name + surname)
+
+```
+
+You can leave spaces between when adding two string variables:
+
+```{python}
+print(name + " " + surname)
+```
+
+You can convert to strings to upper or lower cases by using `.upper()` and `.lower()` functions, respectively:
+
+```{python}
+name.upper() 
+```
+
+
+```{python}
+surname.lower()
+```
+
+How long is the string? You can find out by using `len()` function:
+
+```{python}
+len(name)
+```
+
+```{python}
+len(surname)
+```
+
+
+#### Numeric data
+
+Numeric data represent numerical values, they can be either:
+
+- interger: whole numbers (e.g. 1, 30, 5, 90) or 
+
+- float: numbers with decimals (e.g. 1.2, 4.7...)
+
+For example we may create a variables of river lenght and depth in kilometers
+
+```{python nemricals}
+river_length_km = 531
+print(river_length_km)
+
+river_depth_km = 0.15
+print(river_depth_km)
+```
+
+There are many functions that can be used to analyse numeric data, for example, we may add two numeric variables:
+
+```{python}
+print(river_length_km + river_depth_km)
+```
+
+You can multiply:
+
+```{python}
+
+print(river_depth_km * river_depth_km)
+```
+
+Numeric data does not to need to be surrounded by `" "`, if you do, they will be stored as a string. 
+
+### Boolean
+
+Boolean data takes two possible values:`True` or `False`.
+An example of a logical data type:
+
+```{python logical}
+is_male = True
+
+print(is_male) 
+
+is_female = False
+
+print(is_female) 
+```
+
+In many cases, booleans are used to evaluate conditions:
+
+- `==`: Equal to
+- `!=`: Not equal to
+- `<`: Less than
+- `>`: Greater than
+- `<=`: Less than or equal to
+- `>=`: Greater than or equal to
+
+```{python}
+age = 45
+
+print(age == 45)
+```
+
+
+
+```{python}
+age = 45
+print(age > 50)
+```
+
+```{python}
+age = 45
+print(age > 50)
+```
+
+```{python}
+age = 45
+
+if age > 34:
+    print("This person is an adult")
+else: 
+        print("You are young")
+```
+
+
+#### What type?
+
+You can ask python to tell you the type of the data structure by using `type()` function:
+
+```{python class}
+river_length_km = 531
+print(type(river_length_km))
+```
+
+The `river_lenght_km` variable is an integer
+
+```{python}
+river_name = "Tugela"
+
+print(type(river_name))
+```
+
+
+```{python}
+is_female = False
+
+print(type(is_female))
+```
+
+In this section, you have learnt basic data types, functions and operators. Next, we learn different type of data structures. 

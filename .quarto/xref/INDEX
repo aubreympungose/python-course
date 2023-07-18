@@ -1,0 +1,35 @@
+{
+  "getting-started.qmd": {
+    "getting-started.html": "81b48a9e"
+  },
+  "index.qmd": {
+    "index.html": "07e97f97"
+  },
+  "my-profile.qmd": {
+    "my-profile.html": "533b72a8"
+  },
+  "weeks/quarto_examples/headings.qmd": {
+    "headings.html": "9068ea99"
+  },
+  "weeks/week-1a.qmd": {
+    "week-1a.html": "23af6f18"
+  },
+  "weeks/week-1b.qmd": {
+    "week-1b.html": "36ff7a40"
+  },
+  "weeks/week-2.qmd": {
+    "week-2.html": "2554cfa4"
+  },
+  "weeks/week-3.qmd": {
+    "week-3.html": "78530c4d"
+  },
+  "weeks/week-4.qmd": {
+    "week-4.html": "6478ec30"
+  },
+  "weeks/week-5.qmd": {
+    "week-5.html": "8a4f38d5"
+  },
+  "weeks/week-6.qmd": {
+    "week-6.html": "e4a7da7c"
+  }
+}

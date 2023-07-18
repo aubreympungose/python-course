@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Python for Data Analysis: A gentle introduction - 4 Data Wrangling and Manipulation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../weeks/week-4.html" rel="next">
+<link href="../weeks/week-2.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><link rel="stylesheet" href="../styles.css">
+</head>
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../weeks/week-1a.html"><strong>Weekly materials</strong></a></li><li class="breadcrumb-item"><a href="../weeks/week-3.html">Week 3: Data Manipulation</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Python for Data Analysis: A gentle introduction</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text"><strong>Welcome</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python for Data Science: A gentle introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../my-profile.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About Me</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text"><strong>Weekly materials</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../weeks/week-1a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 1: Introduction: Basics of Python functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../weeks/week-1b.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 1: Data Structures and Types</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../weeks/week-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 2: Data Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../weeks/week-3.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Week 3: Data Manipulation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../weeks/week-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 4: Data manipulation Part 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../weeks/week-5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 5: Importing data, Reproducible workflows</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../weeks/week-6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 6: Communicating and Reporting Data</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#part-i" id="toc-part-i" class="nav-link active" data-scroll-target="#part-i">4.1 PART I</a>
+  <ul class="collapse">
+<li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">4.1.1 Introduction</a></li>
+  <li>
+<a href="#using-dplyr" id="toc-using-dplyr" class="nav-link" data-scroll-target="#using-dplyr">4.1.3 Using <code>dplyr</code></a>
+  <ul class="collapse">
+<li><a href="#select-function" id="toc-select-function" class="nav-link" data-scroll-target="#select-function">4.1.4 <code>select()</code> function</a></li>
+  <li><a href="#the-pipe-operator" id="toc-the-pipe-operator" class="nav-link" data-scroll-target="#the-pipe-operator">The pipe operator (<code>|&gt;</code>)</a></li>
+  <li><a href="#return-to-select-function" id="toc-return-to-select-function" class="nav-link" data-scroll-target="#return-to-select-function">4.1.4 Return to <code>select()</code> function</a></li>
+  <li><a href="#filter-function" id="toc-filter-function" class="nav-link" data-scroll-target="#filter-function">4.1.5 <code>filter()</code> function</a></li>
+  <li><a href="#arrange-function" id="toc-arrange-function" class="nav-link" data-scroll-target="#arrange-function">4.1.6 <code>arrange()</code> function</a></li>
+  <li><a href="#summarise" id="toc-summarise" class="nav-link" data-scroll-target="#summarise">4.1.7 <code>summarise()</code></a></li>
+  <li><a href="#aggregate-statisitcs-with-group_by" id="toc-aggregate-statisitcs-with-group_by" class="nav-link" data-scroll-target="#aggregate-statisitcs-with-group_by">4.1.8 Aggregate Statisitcs with <code>group_by()</code></a></li>
+  <li><a href="#create-columns-with-mutate" id="toc-create-columns-with-mutate" class="nav-link" data-scroll-target="#create-columns-with-mutate">4.1.9 Create columns with <code>mutate()</code></a></li>
+  <li><a href="#wraping-all-up" id="toc-wraping-all-up" class="nav-link" data-scroll-target="#wraping-all-up">Wraping all up</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="https://aubreympungose.github.io/python_course/edit/main/weeks/week-3.qmd" class="toc-action">Edit this page</a></p><p><a href="https://aubreympungose.github.io/python_course/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">4 Data Wrangling and Manipulation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="part-i" class="level1"><h1>4.1 PART I</h1>
+<section id="learning-objectives" class="level2"><h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<ul>
+<li><p>Understand dataframes</p></li>
+<li><p>Manipulate, transform and analyse dataframes</p></li>
+</ul></section><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">4.1.1 Introduction</h2>
+<p>Dataframes, as we saw <a href="../weeks/week-2.html">the previous section</a>, is a tabular data format, with columns and rows. Columns are <em>variable</em> names and rows are individual <em>observations</em>.</p>
+<p>Let us a basic data frame with three columns: country, life expectancy, and population of Southern African countries. First, we create individual vectors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Create a character vector</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>country_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Angola"</span>, <span class="st">"Botswana"</span>, <span class="st">"Lesotho"</span>, <span class="st">"Malawi"</span>, <span class="st">"Mozambique"</span>, <span class="st">"Namibia"</span>, <span class="st">"South Africa"</span>, <span class="st">"Swaziland"</span>, <span class="st">"Zambia"</span>, <span class="st">"Zimbabwe"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>country_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Angola"       "Botswana"     "Lesotho"      "Malawi"       "Mozambique"  
+ [6] "Namibia"      "South Africa" "Swaziland"    "Zambia"       "Zimbabwe"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="do">## Create a numeric vector</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>life_expectancy <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">61.6</span>, <span class="fl">61.1</span>, <span class="fl">57.1</span>, <span class="fl">53.1</span>, <span class="fl">62.9</span>, <span class="fl">59.3</span>, <span class="fl">59.3</span>, <span class="fl">62.3</span>, <span class="fl">61.2</span>, <span class="fl">59.3</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a>life_expectancy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 61.6 61.1 57.1 53.1 62.9 59.3 59.3 62.3 61.2 59.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="do">## create another numeric vector</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>population <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">34500000</span>, <span class="dv">2590000</span>, <span class="dv">228000</span>, <span class="dv">19890000</span>, <span class="dv">32080000</span>,  <span class="dv">2530000</span>, <span class="dv">59390000</span>, <span class="dv">1190000</span>, <span class="dv">19470000</span>, <span class="dv">1599000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Because we have 3 vectors of equal length, we can create a dataframe, using a <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>southern_africa_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(country_name, life_expectancy, population) <span class="co">#combine two vectors to create a dataframe</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a>southern_africa_df <span class="do">## print the dataframe</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   country_name life_expectancy population
+1        Angola            61.6   34500000
+2      Botswana            61.1    2590000
+3       Lesotho            57.1     228000
+4        Malawi            53.1   19890000
+5    Mozambique            62.9   32080000
+6       Namibia            59.3    2530000
+7  South Africa            59.3   59390000
+8     Swaziland            62.3    1190000
+9        Zambia            61.2   19470000
+10     Zimbabwe            59.3    1599000</code></pre>
+</div>
+</div>
+<p>A dataframe is basically made of vectors (columns). In the <code>southern_africa_df</code> dataframe, we have 3 columns: <code>country_name</code>, <code>life_expectancy</code> <code>population</code>. We can extract these elements using the <code>$</code> sign:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>southern_africa_df<span class="sc">$</span>country_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Angola"       "Botswana"     "Lesotho"      "Malawi"       "Mozambique"  
+ [6] "Namibia"      "South Africa" "Swaziland"    "Zambia"       "Zimbabwe"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>southern_africa_df<span class="sc">$</span>life_expectancy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 61.6 61.1 57.1 53.1 62.9 59.3 59.3 62.3 61.2 59.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>southern_africa_df<span class="sc">$</span>population</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 34500000  2590000   228000 19890000 32080000  2530000 59390000  1190000
+ [9] 19470000  1599000</code></pre>
+</div>
+</div>
+</section><section id="using-dplyr" class="level2"><h2 class="anchored" data-anchor-id="using-dplyr">4.1.3 Using <code>dplyr</code>
+</h2>
+<p>We will use the <code>dplyr</code> package to manipulate data. <code>dplyr</code> is part of <code>tidyverse</code> meta-package and is mostly used to clean, manipulate and transform dataframes. <code>dplyr</code> has 5 main verbs/functions:</p>
+<ul>
+<li><p><code>select()</code>: for selecting particular columns in a dataframe</p></li>
+<li><p><code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>: for sub-setting rows based on the specified criteria</p></li>
+<li><p><code>arrange()</code>: sort rows/observations based (ascending/descending)</p></li>
+<li><p><code>summarise()</code>: for summary statistics</p></li>
+<li><p><code>mutate()</code>: create new columns based on the manipulation of the existing columns.</p></li>
+<li><p><code>group_by()</code>: get aggregate statistics by a category</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+</div>
+<p>You can also load <code>dplyr</code> by loading the <code>tidyverse</code> package; this will load all the packages in in `tidyverse at once. This is useful, for example, when you want to clean and visualise data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.4.1     ✔ purrr   1.0.1
+✔ tibble  3.1.8     ✔ stringr 1.5.0
+✔ tidyr   1.3.0     ✔ forcats 1.0.0
+✔ readr   2.1.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+</div>
+<p>Note that you will net to install tidyverse if you did not install it from the previous section:</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyverse' is in use and will not be installed</code></pre>
+</div>
+</div>
+<p>Let us load the <code>gapminder</code> dataset that we used from the previous week. If you did not install, you will need to do so.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">library</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Than assign it to the object, <code>gapminder</code>, using the <code>&lt;-</code> operator:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>gapminder <span class="ot">&lt;-</span> gapminder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Write the following code to change the country and continent from factor to character, I will explain this in the next chapter:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>gapminder<span class="sc">$</span>country <span class="ot">&lt;-</span> <span class="fu">as.character</span>(gapminder<span class="sc">$</span>country)</span>
+<span id="cb23-2"><a href="#cb23-2"></a></span>
+<span id="cb23-3"><a href="#cb23-3"></a>gapminder<span class="sc">$</span>continent <span class="ot">&lt;-</span> <span class="fu">as.character</span>(gapminder<span class="sc">$</span>continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now you have an object, which is a dataframe, called <code>gapminder</code>, you can see it in the <code>Environment</code> pane in RStudio. It shows that it has <code>ncol(gapminder)</code> columns/variables and <code>nrow(gapminder)</code> observations/rows</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/environment_pane.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><code>gapminder</code> dataframe in Environment pane</figcaption></figure>
+</div>
+<p>You can use the <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> fucntion to get the structure of the dataframe:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">str</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [1,704 × 6] (S3: tbl_df/tbl/data.frame)
+ $ country  : chr [1:1704] "Afghanistan" "Afghanistan" "Afghanistan" "Afghanistan" ...
+ $ continent: chr [1:1704] "Asia" "Asia" "Asia" "Asia" ...
+ $ year     : int [1:1704] 1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
+ $ lifeExp  : num [1:1704] 28.8 30.3 32 34 36.1 ...
+ $ pop      : int [1:1704] 8425333 9240934 10267083 11537966 13079460 14880372 12881816 13867957 16317921 22227415 ...
+ $ gdpPercap: num [1:1704] 779 821 853 836 740 ...</code></pre>
+</div>
+</div>
+<p>We have 6 variables:</p>
+<ul>
+<li><p>“country”</p></li>
+<li><p>“continent”</p></li>
+<li><p>“year”</p></li>
+<li><p>“lifeExp”: life expectancy of a country</p></li>
+<li><p>“pop”: population</p></li>
+<li><p>“gdpPercap”: GDP per capita</p></li>
+</ul>
+<p>You can get a sample of the first observations/rows using <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">head</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  country     continent  year lifeExp      pop gdpPercap
+  &lt;chr&gt;       &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+1 Afghanistan Asia       1952    28.8  8425333      779.
+2 Afghanistan Asia       1957    30.3  9240934      821.
+3 Afghanistan Asia       1962    32.0 10267083      853.
+4 Afghanistan Asia       1967    34.0 11537966      836.
+5 Afghanistan Asia       1972    36.1 13079460      740.
+6 Afghanistan Asia       1977    38.4 14880372      786.</code></pre>
+</div>
+</div>
+<section id="select-function" class="level3"><h3 class="anchored" data-anchor-id="select-function">4.1.4 <code>select()</code> function</h3>
+<p>We may be interested in some of the columns in the <code>gampminder</code> dataframe, let say, for example, “country” and “pop” variables and discard others; we use the <code>select()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="fu">select</span>(gapminder, <span class="st">"country"</span>, <span class="st">"pop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,704 × 2
+   country          pop
+   &lt;chr&gt;          &lt;int&gt;
+ 1 Afghanistan  8425333
+ 2 Afghanistan  9240934
+ 3 Afghanistan 10267083
+ 4 Afghanistan 11537966
+ 5 Afghanistan 13079460
+ 6 Afghanistan 14880372
+ 7 Afghanistan 12881816
+ 8 Afghanistan 13867957
+ 9 Afghanistan 16317921
+10 Afghanistan 22227415
+# ℹ 1,694 more rows</code></pre>
+</div>
+</div>
+<p>R return only the country and population variables. <code>select()</code> function only return the variables/columns we are interested in:</p>
+<p><img src="images/visualise_select.png" class="img-fluid"></p>
+</section><section id="the-pipe-operator" class="level3"><h3 class="anchored" data-anchor-id="the-pipe-operator">The pipe operator (<code>|&gt;</code>)</h3>
+<p>The best way to work with R, esepcially tidyverse, is using the pipe (<code>|&gt;</code>) operator. The pipe connect various tasks, for example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>gapminder <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>  <span class="fu">select</span>(country, pop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,704 × 2
+   country          pop
+   &lt;chr&gt;          &lt;int&gt;
+ 1 Afghanistan  8425333
+ 2 Afghanistan  9240934
+ 3 Afghanistan 10267083
+ 4 Afghanistan 11537966
+ 5 Afghanistan 13079460
+ 6 Afghanistan 14880372
+ 7 Afghanistan 12881816
+ 8 Afghanistan 13867957
+ 9 Afghanistan 16317921
+10 Afghanistan 22227415
+# ℹ 1,694 more rows</code></pre>
+</div>
+</div>
+<p>The pipe chains your operations. It says:</p>
+<ul>
+<li><p>Take <code>gapminder</code> dataframe</p></li>
+<li><p>Then using the <code>select()</code> function to select only pop and country columns</p></li>
+</ul>
+<p>You will that pipe becomes important when having multiple chains of functions at once.</p>
+<p>You will notice that in other sources: web, books, etc. have %&gt;% instead of |&gt;. It works the same way. The |&gt; is new. %&gt;% comes from <code>mgttr</code>, an external package, so you needed to load it first before using it. The native pipe |&gt; is built in R, so it there is no need to load it. So, we will stick with the |&gt;.</p>
+<p>In your RStudio, follow these instructions:</p>
+<ul>
+<li><p>Go to ‘Tools’ and click on ‘Global Options’</p></li>
+<li><p>Navigate to ‘Code’ on the left pane</p></li>
+<li><p>Then select the fourth option, “use native pipe operator, |&gt;”</p></li>
+<li><p>Click ‘Apply’</p></li>
+</ul>
+<p>You can use the short cut <code>Ctrl + Shift + M</code> If you using Windows to insert the pipe instead of typing it. If you are using Mac, use <code>Cmd + Shift + M</code>.</p>
+</section><section id="return-to-select-function" class="level3"><h3 class="anchored" data-anchor-id="return-to-select-function">4.1.4 Return to <code>select()</code> function</h3>
+<p>As I have said, <code>select()</code> only return the columns specified</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>gapminder <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="#cb32-2"></a>  <span class="fu">select</span>(country, pop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,704 × 2
+   country          pop
+   &lt;chr&gt;          &lt;int&gt;
+ 1 Afghanistan  8425333
+ 2 Afghanistan  9240934
+ 3 Afghanistan 10267083
+ 4 Afghanistan 11537966
+ 5 Afghanistan 13079460
+ 6 Afghanistan 14880372
+ 7 Afghanistan 12881816
+ 8 Afghanistan 13867957
+ 9 Afghanistan 16317921
+10 Afghanistan 22227415
+# ℹ 1,694 more rows</code></pre>
+</div>
+</div>
+<p>Also, notice that we selected “country’ and”pop” columns but did not save them and assigned to an object. To store the results into an object, we have to use assignment operator (<code>&lt;-</code>):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>gapminder_selected <span class="ot">&lt;-</span> gapminder <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>  <span class="fu">select</span>(country, pop)</span>
+<span id="cb34-3"><a href="#cb34-3"></a></span>
+<span id="cb34-4"><a href="#cb34-4"></a>gapminder_selected <span class="co"># print</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,704 × 2
+   country          pop
+   &lt;chr&gt;          &lt;int&gt;
+ 1 Afghanistan  8425333
+ 2 Afghanistan  9240934
+ 3 Afghanistan 10267083
+ 4 Afghanistan 11537966
+ 5 Afghanistan 13079460
+ 6 Afghanistan 14880372
+ 7 Afghanistan 12881816
+ 8 Afghanistan 13867957
+ 9 Afghanistan 16317921
+10 Afghanistan 22227415
+# ℹ 1,694 more rows</code></pre>
+</div>
+</div>
+<p>Now we have saved results as <code>gapminder_selected</code>, and we can do other analysis with this object because we have saved it. So, in a nutshell, when you run a code without assigning results into an object, using the <code>&lt;-</code> operator, <strong>results will not be saved but will be printed</strong>.</p>
+<p>You can also select columns based by index/position. Let us select only 1st and 3rd coulmns</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a href="#cb36-2"></a>  <span class="fu">select</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,704 × 2
+   country      year
+   &lt;chr&gt;       &lt;int&gt;
+ 1 Afghanistan  1952
+ 2 Afghanistan  1957
+ 3 Afghanistan  1962
+ 4 Afghanistan  1967
+ 5 Afghanistan  1972
+ 6 Afghanistan  1977
+ 7 Afghanistan  1982
+ 8 Afghanistan  1987
+ 9 Afghanistan  1992
+10 Afghanistan  1997
+# ℹ 1,694 more rows</code></pre>
+</div>
+</div>
+<p>Or you can select a range of columns</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb38-2"><a href="#cb38-2"></a>  <span class="fu">select</span>(country<span class="sc">:</span>year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,704 × 3
+   country     continent  year
+   &lt;chr&gt;       &lt;chr&gt;     &lt;int&gt;
+ 1 Afghanistan Asia       1952
+ 2 Afghanistan Asia       1957
+ 3 Afghanistan Asia       1962
+ 4 Afghanistan Asia       1967
+ 5 Afghanistan Asia       1972
+ 6 Afghanistan Asia       1977
+ 7 Afghanistan Asia       1982
+ 8 Afghanistan Asia       1987
+ 9 Afghanistan Asia       1992
+10 Afghanistan Asia       1997
+# ℹ 1,694 more rows</code></pre>
+</div>
+</div>
+<p>Here, we have select columns from country to year only.</p>
+<p>You can also exclude certain columns by simply adding the minus (-) sign; let say we want to exclude the <code>gdpPercap</code> from the dataframe</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb40-2"><a href="#cb40-2"></a>  <span class="fu">select</span>(<span class="sc">-</span>gdpPercap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,704 × 5
+   country     continent  year lifeExp      pop
+   &lt;chr&gt;       &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333
+ 2 Afghanistan Asia       1957    30.3  9240934
+ 3 Afghanistan Asia       1962    32.0 10267083
+ 4 Afghanistan Asia       1967    34.0 11537966
+ 5 Afghanistan Asia       1972    36.1 13079460
+ 6 Afghanistan Asia       1977    38.4 14880372
+ 7 Afghanistan Asia       1982    39.9 12881816
+ 8 Afghanistan Asia       1987    40.8 13867957
+ 9 Afghanistan Asia       1992    41.7 16317921
+10 Afghanistan Asia       1997    41.8 22227415
+# ℹ 1,694 more rows</code></pre>
+</div>
+</div>
+</section><section id="filter-function" class="level3"><h3 class="anchored" data-anchor-id="filter-function">4.1.5 <code>filter()</code> function</h3>
+<p>You may be interested in observations/rows that meet certain conditions. We use <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> function to return the list that meet our conditions. <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> has several operators:</p>
+<ul>
+<li><p><code>==</code>: equal to</p></li>
+<li><p><code>!=</code>: not equal to</p></li>
+<li><p><code>&gt;</code>: greater than</p></li>
+<li><p><code>&lt;</code>: less than</p></li>
+<li><p><code>&gt;=</code>: greater than or equal to</p></li>
+<li><p><code>&lt;=</code>: less than or equal to</p></li>
+</ul>
+<p>Let us filter based on the continent column. How many continent are there? Create a basic table first</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="fu">table</span>(gapminder<span class="sc">$</span>continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  Africa Americas     Asia   Europe  Oceania 
+     624      300      396      360       24 </code></pre>
+</div>
+</div>
+<p>There are five continents. Let us filter only observations from the African continent:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>africa_gapminder <span class="ot">&lt;-</span> gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb44-2"><a href="#cb44-2"></a>  <span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">"Africa"</span>)</span>
+<span id="cb44-3"><a href="#cb44-3"></a></span>
+<span id="cb44-4"><a href="#cb44-4"></a>africa_gapminder  <span class="co"># print </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 624 × 6
+   country continent  year lifeExp      pop gdpPercap
+   &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Algeria Africa     1952    43.1  9279525     2449.
+ 2 Algeria Africa     1957    45.7 10270856     3014.
+ 3 Algeria Africa     1962    48.3 11000948     2551.
+ 4 Algeria Africa     1967    51.4 12760499     3247.
+ 5 Algeria Africa     1972    54.5 14760787     4183.
+ 6 Algeria Africa     1977    58.0 17152804     4910.
+ 7 Algeria Africa     1982    61.4 20033753     5745.
+ 8 Algeria Africa     1987    65.8 23254956     5681.
+ 9 Algeria Africa     1992    67.7 26298373     5023.
+10 Algeria Africa     1997    69.2 29072015     4797.
+# ℹ 614 more rows</code></pre>
+</div>
+</div>
+<p><code>africa_gapminder</code> object is a dataframe we have just created, with only countries from the African continent. What <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> does is to return observations/rows that only meet our conditions:</p>
+<p><img src="images/visualise_filter.png" class="img-fluid"></p>
+<p>Let us filter a numeric column; for example, we may want to filter countries with population of above 50 million and assign results to an object named high_pop:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>high_pop <span class="ot">&lt;-</span> gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb46-2"><a href="#cb46-2"></a>  <span class="fu">filter</span>(pop <span class="sc">&gt;</span> <span class="dv">50000000</span>)</span>
+<span id="cb46-3"><a href="#cb46-3"></a></span>
+<span id="cb46-4"><a href="#cb46-4"></a>high_pop <span class="do">## print</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 190 × 6
+   country    continent  year lifeExp       pop gdpPercap
+   &lt;chr&gt;      &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Bangladesh Asia       1957    39.3  51365468      662.
+ 2 Bangladesh Asia       1962    41.2  56839289      686.
+ 3 Bangladesh Asia       1967    43.5  62821884      721.
+ 4 Bangladesh Asia       1972    45.3  70759295      630.
+ 5 Bangladesh Asia       1977    46.9  80428306      660.
+ 6 Bangladesh Asia       1982    50.0  93074406      677.
+ 7 Bangladesh Asia       1987    52.8 103764241      752.
+ 8 Bangladesh Asia       1992    56.0 113704579      838.
+ 9 Bangladesh Asia       1997    59.4 123315288      973.
+10 Bangladesh Asia       2002    62.0 135656790     1136.
+# ℹ 180 more rows</code></pre>
+</div>
+</div>
+<p>You can also combine 2 conditions. Let us say we want:</p>
+<ul>
+<li><p>countries in Africa</p></li>
+<li><p>the year 2007</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>africa_2007 <span class="ot">&lt;-</span> gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb48-2"><a href="#cb48-2"></a>  <span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">"Africa"</span>, year <span class="sc">==</span> <span class="dv">2007</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Filter rows from the Africa OR Asia</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb49-2"><a href="#cb49-2"></a>  <span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">"Africa"</span> <span class="sc">|</span> continent <span class="sc">==</span> <span class="st">"Asia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,020 × 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;chr&gt;       &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# ℹ 1,010 more rows</code></pre>
+</div>
+</div>
+<p>Sometimes you may need to filter multiple rows, let say, more than 5 countries. It would be inconvinient to type <code>country == "..."</code> five times. This is where the <code>%in%</code> operator is useful:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>africa_2007 <span class="sc">|&gt;</span> </span>
+<span id="cb51-2"><a href="#cb51-2"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"South Africa"</span>, <span class="st">"Zimbabwe"</span>, <span class="st">"Ghana"</span>, <span class="st">"Tanzania"</span>, <span class="st">"Tunisia"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 6
+  country      continent  year lifeExp      pop gdpPercap
+  &lt;chr&gt;        &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+1 Ghana        Africa     2007    60.0 22873338     1328.
+2 South Africa Africa     2007    49.3 43997828     9270.
+3 Tanzania     Africa     2007    52.5 38139640     1107.
+4 Tunisia      Africa     2007    73.9 10276158     7093.
+5 Zimbabwe     Africa     2007    43.5 12311143      470.</code></pre>
+</div>
+</div>
+</section><section id="arrange-function" class="level3"><h3 class="anchored" data-anchor-id="arrange-function">4.1.6 <code>arrange()</code> function</h3>
+<p><code>arrange()</code> function is self-explanatory: it sort values into ascending or descending order</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>africa_2007 <span class="sc">|&gt;</span> </span>
+<span id="cb53-2"><a href="#cb53-2"></a>  <span class="fu">arrange</span>(lifeExp) <span class="sc">|&gt;</span> </span>
+<span id="cb53-3"><a href="#cb53-3"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="do">## show the first 10 observations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 6
+   country                  continent  year lifeExp      pop gdpPercap
+   &lt;chr&gt;                    &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Swaziland                Africa     2007    39.6  1133066     4513.
+ 2 Mozambique               Africa     2007    42.1 19951656      824.
+ 3 Zambia                   Africa     2007    42.4 11746035     1271.
+ 4 Sierra Leone             Africa     2007    42.6  6144562      863.
+ 5 Lesotho                  Africa     2007    42.6  2012649     1569.
+ 6 Angola                   Africa     2007    42.7 12420476     4797.
+ 7 Zimbabwe                 Africa     2007    43.5 12311143      470.
+ 8 Central African Republic Africa     2007    44.7  4369038      706.
+ 9 Liberia                  Africa     2007    45.7  3193942      415.
+10 Rwanda                   Africa     2007    46.2  8860588      863.</code></pre>
+</div>
+</div>
+<p>The default sorting is ascending order; you can sort into descending order by using <code>desc()</code> function within <code>arrange()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>africa_2007 <span class="sc">|&gt;</span> </span>
+<span id="cb55-2"><a href="#cb55-2"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(lifeExp)) <span class="sc">|&gt;</span> </span>
+<span id="cb55-3"><a href="#cb55-3"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="do">## show the first 10 observations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 6
+   country               continent  year lifeExp      pop gdpPercap
+   &lt;chr&gt;                 &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Reunion               Africa     2007    76.4   798094     7670.
+ 2 Libya                 Africa     2007    74.0  6036914    12057.
+ 3 Tunisia               Africa     2007    73.9 10276158     7093.
+ 4 Mauritius             Africa     2007    72.8  1250882    10957.
+ 5 Algeria               Africa     2007    72.3 33333216     6223.
+ 6 Egypt                 Africa     2007    71.3 80264543     5581.
+ 7 Morocco               Africa     2007    71.2 33757175     3820.
+ 8 Sao Tome and Principe Africa     2007    65.5   199579     1598.
+ 9 Comoros               Africa     2007    65.2   710960      986.
+10 Mauritania            Africa     2007    64.2  3270065     1803.</code></pre>
+</div>
+</div>
+</section><section id="summarise" class="level3"><h3 class="anchored" data-anchor-id="summarise">4.1.7 <code>summarise()</code>
+</h3>
+<p>We use the <code>summarise()</code> function to get the summary statistics. Common statistics include mean, median, standard deviation, minimum, maximum, etc.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb57-2"><a href="#cb57-2"></a>  <span class="fu">summarise</span>(<span class="at">mean_life_exp =</span> <span class="fu">mean</span>(lifeExp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  mean_life_exp
+          &lt;dbl&gt;
+1          59.5</code></pre>
+</div>
+</div>
+<p>Standard deviation:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb59-2"><a href="#cb59-2"></a>  <span class="fu">summarise</span>(<span class="at">sd_life_exp =</span> <span class="fu">sd</span>(lifeExp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  sd_life_exp
+        &lt;dbl&gt;
+1        12.9</code></pre>
+</div>
+</div>
+<p>You can get various summary statistics by combing multiple arguments within summarise():</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb61-2"><a href="#cb61-2"></a>  <span class="fu">summarise</span>(<span class="at">mean_life_exp =</span> <span class="fu">mean</span>(lifeExp),   </span>
+<span id="cb61-3"><a href="#cb61-3"></a>            <span class="at">sd_life_exp =</span> <span class="fu">sd</span>(lifeExp),</span>
+<span id="cb61-4"><a href="#cb61-4"></a>            <span class="at">min_life_exp =</span> <span class="fu">min</span>(lifeExp),</span>
+<span id="cb61-5"><a href="#cb61-5"></a>            <span class="at">max_life_exp =</span> <span class="fu">max</span>(lifeExp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  mean_life_exp sd_life_exp min_life_exp max_life_exp
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+1          59.5        12.9         23.6         82.6</code></pre>
+</div>
+</div>
+<p>Magic!</p>
+</section><section id="aggregate-statisitcs-with-group_by" class="level3"><h3 class="anchored" data-anchor-id="aggregate-statisitcs-with-group_by">4.1.8 Aggregate Statisitcs with <code>group_by()</code>
+</h3>
+<p>In many instances we are interested in aggregate statistics, that is, summary statistics by a category. Say you want to group rows by the continent column then get the use <code>summarise()</code> to get average GDP per capita for each continent. This is where the <code>group()</code> function is useful:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a><span class="do">## First create a dataframe of the year 2007 only</span></span>
+<span id="cb63-2"><a href="#cb63-2"></a></span>
+<span id="cb63-3"><a href="#cb63-3"></a>gapminder_2007 <span class="ot">&lt;-</span> gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb63-4"><a href="#cb63-4"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2007</span>)</span>
+<span id="cb63-5"><a href="#cb63-5"></a></span>
+<span id="cb63-6"><a href="#cb63-6"></a><span class="do">## Then use group_by()</span></span>
+<span id="cb63-7"><a href="#cb63-7"></a></span>
+<span id="cb63-8"><a href="#cb63-8"></a>gapminder_2007 <span class="sc">|&gt;</span> </span>
+<span id="cb63-9"><a href="#cb63-9"></a>  <span class="fu">group_by</span>(continent) <span class="sc">|&gt;</span> </span>
+<span id="cb63-10"><a href="#cb63-10"></a>  <span class="fu">summarise</span>(<span class="at">gdp_continent =</span> <span class="fu">mean</span>(gdpPercap)) <span class="sc">|&gt;</span> </span>
+<span id="cb63-11"><a href="#cb63-11"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(gdp_continent))  <span class="do">## arrange by gdp_continent into descending</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  continent gdp_continent
+  &lt;chr&gt;             &lt;dbl&gt;
+1 Oceania          29810.
+2 Europe           25054.
+3 Asia             12473.
+4 Americas         11003.
+5 Africa            3089.</code></pre>
+</div>
+</div>
+</section><section id="create-columns-with-mutate" class="level3"><h3 class="anchored" data-anchor-id="create-columns-with-mutate">4.1.9 Create columns with <code>mutate()</code>
+</h3>
+<p>mutate create new columns based on the existing columns. In most cases we want to transform the data. For example, we know that the GDP per capita is calculated from dividing the total GDP by a population. We may want to create a new column named <code>gdp_total</code> with a formula (<code>gdp_total = gdpPercap * pop)</code>. We can use <code>mutate()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a>gapminder_2007 <span class="ot">&lt;-</span> gapminder_2007 <span class="sc">|&gt;</span> </span>
+<span id="cb65-2"><a href="#cb65-2"></a>  <span class="fu">mutate</span>(<span class="at">gdp_total =</span> gdpPercap <span class="sc">*</span> pop)</span>
+<span id="cb65-3"><a href="#cb65-3"></a></span>
+<span id="cb65-4"><a href="#cb65-4"></a><span class="fu">head</span>(gapminder_2007)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+  country     continent  year lifeExp      pop gdpPercap     gdp_total
+  &lt;chr&gt;       &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;         &lt;dbl&gt;
+1 Afghanistan Asia       2007    43.8 31889923      975.  31079291949.
+2 Albania     Europe     2007    76.4  3600523     5937.  21376411360.
+3 Algeria     Africa     2007    72.3 33333216     6223. 207444851958.
+4 Angola      Africa     2007    42.7 12420476     4797.  59583895818.
+5 Argentina   Americas   2007    75.3 40301927    12779. 515033625357.
+6 Australia   Oceania    2007    81.2 20434176    34435. 703658358894.</code></pre>
+</div>
+</div>
+<p>You can see that the new column named <code>gdp_total</code> has been added.</p>
+<p>You can also combine multiple arguments within <code>mutate()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a>gapminder_2007 <span class="ot">&lt;-</span> gapminder_2007 <span class="sc">|&gt;</span> </span>
+<span id="cb67-2"><a href="#cb67-2"></a>  <span class="fu">mutate</span>(<span class="at">gdp_total =</span> gdpPercap <span class="sc">*</span> pop,</span>
+<span id="cb67-3"><a href="#cb67-3"></a>         <span class="at">life_exp_squared =</span> lifeExp <span class="sc">**</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="wraping-all-up" class="level3"><h3 class="anchored" data-anchor-id="wraping-all-up">Wraping all up</h3>
+<p>The pipe operator is very useful. You can chain multiple operations into a single code. Let say we want to do the following:</p>
+<ul>
+<li><p>Find country called South Africa</p></li>
+<li><p>find average life expectancy by year</p></li>
+<li><p>Arrange by year into a descending order</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb68-2"><a href="#cb68-2"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"South Africa"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb68-3"><a href="#cb68-3"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span> </span>
+<span id="cb68-4"><a href="#cb68-4"></a>  <span class="fu">summarise</span>(<span class="at">life_exp =</span> <span class="fu">mean</span>(lifeExp)) <span class="sc">|&gt;</span> </span>
+<span id="cb68-5"><a href="#cb68-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 2
+    year life_exp
+   &lt;int&gt;    &lt;dbl&gt;
+ 1  2007     49.3
+ 2  2002     53.4
+ 3  1997     60.2
+ 4  1992     61.9
+ 5  1987     60.8
+ 6  1982     58.2
+ 7  1977     55.5
+ 8  1972     53.7
+ 9  1967     51.9
+10  1962     50.0
+11  1957     48.0
+12  1952     45.0</code></pre>
+</div>
+</div>
+<p>You can take it even further by creating a plot. You know that BRICS countries are Brazil, Russia, India, China and South Africa. You want to find trends in life expectancy. Note that there is no data for Russia</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb70-2"><a href="#cb70-2"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Brazil"</span>, <span class="st">"Russia"</span>, <span class="st">"India"</span>, <span class="st">"China"</span>, <span class="st">"South Africa"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb70-3"><a href="#cb70-3"></a>  <span class="fu">select</span>(country, year, lifeExp) <span class="sc">|&gt;</span> </span>
+<span id="cb70-4"><a href="#cb70-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> lifeExp, <span class="at">colour =</span> country)) <span class="sc">+</span></span>
+<span id="cb70-5"><a href="#cb70-5"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb70-6"><a href="#cb70-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb70-7"><a href="#cb70-7"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1950</span>, <span class="dv">1960</span>, <span class="dv">1980</span>, <span class="dv">1990</span>, <span class="dv">2000</span>, <span class="dv">2007</span>)) <span class="sc">+</span></span>
+<span id="cb70-8"><a href="#cb70-8"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb70-9"><a href="#cb70-9"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb70-10"><a href="#cb70-10"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Trends in life expectancy of BRICS country"</span>,</span>
+<span id="cb70-11"><a href="#cb70-11"></a>       <span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb70-12"><a href="#cb70-12"></a>       <span class="at">y =</span> <span class="st">"Life expectancy (in years)"</span>,</span>
+<span id="cb70-13"><a href="#cb70-13"></a>       <span class="at">caption =</span> <span class="st">"Data source: Gapminder"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="week-3_files/figure-html/line_plot_sa-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Wait a minute: why did south Africa’s life expectancy started to decline rapidly from the 1990s? One plausible reason would be the impact of HIV/AIDS and lack of antiretrovirals (ARVs). Welcome to data analysis.</p>
+<p>You can see above the efficiency of the pipe operator. Think of the pipe operator as:</p>
+<p><img src="images/pipe.gif" class="img-fluid"></p>
+<p>OR</p>
+<p><img src="images/pipe_bake.gif" class="img-fluid"></p>
+<p>We have introduced to the basics of data manipulation in R using the <code>dplyr</code> package in R. While we have covered a lot, the path is long. However, once you master these basic functions, you will not struggle in the following sections. These resources may be helpful:</p>
+<ul>
+<li><p><a href="https://r4ds.hadley.nz/">R for Data Science</a>. Chapter 4</p></li>
+<li><p><a href="https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf">Data transformation with dplyr</a></p></li>
+</ul>
+
+
+</section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="../weeks/week-2.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Week 2: Data Visualisation</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../weeks/week-4.html" class="pagination-link">
+        <span class="nav-page-text">Week 4: Data manipulation Part 2</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">© Aubrey Mpungose, 2023</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

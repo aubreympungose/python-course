@@ -1,0 +1,63 @@
+project:
+  type: website
+  output-dir: docs
+
+
+website:
+  page-navigation: true
+  title: "Python for Data Analysis: A gentle introduction"
+  site-url: "https://aubreympungose.github.io/python_course/"
+
+  repo-url:  https://aubreympungose.github.io/python_course/
+  repo-actions: [edit, issue]
+
+  page-footer:
+    right: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
+    left: "&copy; Aubrey Mpungose, 2023"
+    
+  sidebar:
+    style: "docked"
+    search: true
+    collapse-level: 0
+    contents:
+      - section: "**Welcome**"
+        contents:
+          - index.qmd
+          - my-profile.qmd
+          - getting-started.qmd
+          
+      - section: "**Weekly materials**"
+        contents:
+          - href: weeks/week-1a.qmd
+            text: "Week 1: Introduction: Basics of Python functions"
+          - href: weeks/week-1b.qmd
+            text: "Week 1: Data Structures and Types"
+          - href: weeks/week-2.qmd
+            text: "Week 2: Data Visualisation"
+          - href: weeks/week-3.qmd
+            text: "Week 3: Data Manipulation"
+          - href: weeks/week-4.qmd
+            text: "Week 4: Data manipulation Part 2"
+          - href: weeks/week-5.qmd
+            text: "Week 5: Importing data, Reproducible workflows"
+          - href: weeks/week-6.qmd
+            text: "Week 6: Communicating and Reporting Data"
+
+ 
+format:
+ html:
+    theme:
+      light: cosmo
+      dark: [cosmo, theme-dark.scss]
+    code-background: true
+    code-copy: true
+    code-link: true
+    css: styles.css
+    toc: true
+    
+filters:
+  - include-files.lua
+  - quarto
+        
+execute:
+  freeze: auto 

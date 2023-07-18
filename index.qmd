@@ -1,0 +1,56 @@
+---
+title: "Python for Data Science: A gentle introduction"
+author: Aubrey Mpungose
+subtitle: "University of KwaZulu Natal"
+---
+
+## An Invitation to Python for Data Science
+
+These workshops aim to introduce participants to the foundations of data science using Python programming Language. As you advance in our studies and career, you will learn that the ability to collect, clean, transform, analyse and use data for predictive analytics is one of the most needed skills in the labour market. As we live in the digital age, where big data has become a commodity, learning to handle these data systems will be one of the most important investments in your career.
+
+In this course, we will be using Python for programming and data analysis. Python along with R, is flexible when working with data, especially large data. Majority of academics, researchers, and students who analyse quantitative data use programs such as SPSS, STATA and Excel. However, these programs are expensive! Universities spend large sums of money to purchase these licences, which disadvantages students and academics in the developing world. They are also very limited in handling various data formats  such as big data, text data, geospatial data, etc. But if you insist on learning them, good for you.
+
+![](images/future.png){width="450"}
+
+On the other hand, Python and  R are free and come with with **ABSOLUTELY NO WARRANTY** 😎 . They are very flexible and can handle very large data. They are the dominant programming languages used in the labour market around the world. Python and R have thousands of libraries that can handle and analyse any type of data, including basic data cleaning and wrangling, transforming data, regression, visualisation, text analysis and natural language processing, statistical analysis, machine learning, geospatial analysis and visualisation. In academia, researchers are encouraged to make their research outputs *Reproducible*, that is, researchers must share code, data and analysis when submitting papers to journals. This is called [*Reproducible Science*](https://www.nature.com/articles/s41562-016-0021).
+
+Both Python and R are awesome programming languages. In this course we will be working with Python. If you are interested in R, there is another course that I have designed for you, you can access it [here](https://aubreympungose.github.io/data-science-course/)
+
+
+## Learning Objectives
+
+-   Understand Python and its functions
+
+-   Conduct basic programming using Python
+
+-   Learn to wrangle, clean and transform data
+
+-   Learn the basics of data visualisation using matplotlib
+
+-   Learn how to conduct exploratory data analysis
+
+-   Learn to communicate and tell stories using data
+
+## Materials
+
+There are tons of materials available online; some of the most popular books include:
+
+-   McKinney, W. (2022). [Python for data analysis, 3rd Edition](https://wesmckinney.com/book/). O'Reilly Media
+
+-  VanderPlas, J. (2016). [Python data science handbook: Essential tools for working with data](https://jakevdp.github.io/PythonDataScienceHandbook/). O'Reilly Media
+
+# Schedule
+
+| Week   | Topic                                     | Presenter |
+|--------|-------------------------------------------|-----------|
+| Week 1 | Introduction: Basics of Python functions  | Aubrey    |
+| Week 1 | Data Structures and Types                 | Aubrey    |
+| Week 2 | Data Visualisation                        | Aubrey    |
+| Week 3 | Data Manipulation                         | Aubrey    |
+| Week 4 | Data manipulation Part 2                  | Aubrey    |
+| Week 5 | Importing data, Reproducible workflows    | Aubrey    |
+| Week 6 | Communicating and Reporting Data          | Aubrey    |
+
+## Let's Get Started
+
+![](images/python_meme.jpg){width="450"}

@@ -1,0 +1,472 @@
+---
+title: "2 Data Structures in Python"
+code-copy: true
+code-line-numbers: true
+tidy: true
+---
+In this chapter we deal with different data structures that can hold data in Python. Specifically, we will focus on the follwoing data structures:
+
+- Lists
+
+- Tuples
+
+- Dictionaries
+
+- DataFrames
+
+
+### Lists
+
+List is a data structure that store a collection of elements/items within it. For example, in [previous chapter](week-1a.qmd) we created a string variable named `country` that contained "South Africa"  element:
+
+```{python}
+country = "South Africa"
+
+print(country)
+```
+
+What if we wanted to create another country variable, named country_2 with "Zimbabwe" as an element? We can also do this:
+
+```{python}
+
+country_2 = "Zimbabwe"
+print(country_2)
+```
+
+What if we want to add country_3, country_4, etc? We can end up having many variables. This where lists come in. Lists are used to hold many items together. you can create lists in Python by using square barackets (`[]`):
+
+```{python}
+southern_african_countries = ["Angola", "Botswana", "Lesotho", "Malawi", "Mozambique", "Namibia", "South Africa", "Swaziland", "Zambia", "Zimbabwe"]
+
+print(southern_african_countries)
+```
+
+We now have a list of all countries in the Southern African region. There are various functions that can be used to extract, analyse and manipulate elements in a list. For example, you may be interested on how many elements are in a lists; in our case, how many countries are in the `southern_african_countries` list. You can use the `len()` function:
+
+```{python}
+southern_african_countries = ["Angola", "Botswana", "Lesotho", "Malawi", "Mozambique", "Namibia", "South Africa", "Swaziland", "Zambia", "Zimbabwe"]
+
+print(len(southern_african_countries))
+```
+
+The list has 10 elements/items. 
+
+
+#### Subset a list
+
+You can extract the list item by using the `[]` and the index position of the item. Note that Python index start at 0, meaning the first element will be in the position 0. This is important especially when coming from R background. Let extract the first element:
+
+```{python}
+print(southern_african_countries[0])
+```
+
+The first element is Angola. 
+
+You can use can access the last element by:
+
+```{python}
+print(southern_african_countries[-1])
+```
+
+You can access more than 1 items; for example, extract the first, second and third items in the list by slicing:
+
+```{python}
+print(southern_african_countries[0:3])
+```
+
+Notice that we have included the index `3`, which is the 4th item, although the element itself is not printed. When slicing a list, the last index mentioned is not included. This is very importnt to note. There are other slicing options:
+
+```{python}
+print(southern_african_countries[:3])
+```
+
+#### Manipulate a list
+
+List elements can be changed. For example, in 2018 Zwaziland changed their name to "eSwatini". We can change this in a list. First re-create the list:
+
+```{python}
+southern_african_countries = ["Angola", "Botswana", "Lesotho", "Malawi", "Mozambique", "Namibia", "South Africa", "Swaziland", "Zambia", "Zimbabwe"]
+
+print(southern_african_countries)
+
+```
+
+Then change the list element:
+
+```{python}
+southern_african_countries[7] = "eSwatini"
+print(southern_african_countries)
+```
+
+We have changed the list element from "Swaziland" to "Eswatini".
+
+You can also **add** new elements in a list. Suppose a geographer told us that our list of Southern African countries missed 3 countries:  Democratic Republic of the Congo, Mauritius, Madagascar and Seychelles. In Python, we can update our list and assign it to anew variable called `southern_africa_updated`. First find the length of the original `southern_african_countries`:
+
+```{python}
+len(southern_african_countries)
+```
+
+Add new items:
+
+```{python}
+southern_africa_updated = southern_african_countries + ["Democratic Republic of the Congo", "Mauritius", "Madagascar", "Seychelles"]
+
+print(southern_africa_updated)
+```
+
+Find the lenght of the updated variable:
+
+```{python}
+len(southern_africa_updated)
+```
+
+The updated variable has lenght of 14. This means we have added 4 items.
+
+You can remove an element from the list by using `del()` function:
+
+```{python}
+del southern_africa_updated[0]
+
+print(southern_africa_updated)
+```
+We have removed the element at the index 0, which is Botswana.
+
+
+#### Manipulating list with numeric data
+
+In above examples we have worked with list that contain string data types: all out elements were string (country names). Suppose we have the life expectancy of those countries. Life expectancy is the average number of years is expected to live:
+
+Let us create a numeric list, that we name `life_expectancy`, that has the average life expectancy of the countries of Southern Africa:
+
+```{python}
+life_expectancy = [61.6, 61.1, 57.1, 53.1, 62.9, 59.3, 59.3, 62.3, 61.2, 59.3]
+
+print(life_expectancy)
+```
+
+We can find the **minimum** life expactancy:
+```{python}
+print(min(life_expectancy))
+```
+
+Print the **maximum** life expectancy:
+
+```{python}
+print(max(life_expectancy))
+```
+
+
+Not that a list can hold elements of of different data types: string, float, integer, boolean, etc.
+
+```{python}
+ person_1 = ["Name", "Aubrey", "Age", 32, "Height", 1.8, "Is male?", True]
+ print(person_1)
+ ```
+
+#### NumPy Arrays
+
+A NumPy array is a data structure that can hold numeic elements. It is short for Numeric Python. It is an important data structure if you want to manipulate numeric data. First, you will need to install the `numpy` package if not already installed:
+
+```{python}
+#| eval: false
+pip install numpy
+```
+
+Then load the library as:
+
+```{python}
+import numpy as np
+```
+
+Suppose we have the lenght in kilometers of major South Africa rivers stored as a list and assigned it to `river_lenght_km` variable:
+
+```{python}
+river_lenght_km = [2200, 1800, 1210, 502, 560, 645, 520, 480]
+print(river_lenght_km)
+```
+
+We need to convert this lift into an numpy array:
+
+```{python}
+
+river_lenght_km = np.array(river_lenght_km)
+
+print(type(river_lenght_km))
+```
+
+
+##### Summary statistics and mathematical operations
+
+There many functions within the `numpy` library. We can calculate summary statistics:
+
+Get the mean/average:
+
+```{python}
+print(np.mean(river_lenght_km))
+```
+
+Get the median:
+
+```{python}
+print(np.median(river_lenght_km))
+```
+
+Get the standard deviation:
+
+```{python}
+print(np.std(river_lenght_km))
+```
+
+There are other functions you can use. 
+
+What are the rivers that have lenght of greater than 1000 kilometers? Find these and assign the result to a variable named longest_rivers
+
+```{python}
+longest_rivers = river_lenght_km[river_lenght_km > 1000]
+print(longest_rivers)
+```
+
+The `river_lenght_km` array is in kilometers. What if we want to convert to meters? Since 1 km = 1000 meters, you can convert kilometer to meter by multplying by 1000 since. Let's do this and assign result to a new variable named river_lenght_meters
+
+```{python}
+river_lenght_meters = river_lenght_km * 1000
+
+print(river_lenght_meters)
+```
+
+
+Just like lists, you can subsets numpy arrays using index positions of the element. To acces the second element of `river_lenght_km`: 
+
+```{python}
+print(river_lenght_km[1])
+```
+
+You can sort elements into ascending or descending order:
+
+```{python}
+np.sort(river_lenght_km)
+```
+
+Sort into descending
+
+```{python}
+np.sort(river_lenght_km)[::-1]
+```
+
+Note that NumPy arrays can also be 2 dimensional; 2D arrays is a matrix like data with rows and columns:
+
+```{python}
+two_d_array = np.array([[1, 2, 3],
+                   [4, 5, 6],
+                   [7, 8, 9]])
+
+print(two_d_array)
+```
+
+### Dictionaries
+
+Remeember we created two lists previously, `southern_african_countries` and `life_expectancy`. 
+
+```{python}
+southern_african_countries = ["Angola", "Botswana", "Lesotho", "Malawi", "Mozambique", "Namibia", "South Africa", "Swaziland", "Zambia", "Zimbabwe"]
+
+print(southern_african_countries)
+
+life_expectancy = [61.6, 61.1, 57.1, 53.1, 62.9, 59.3, 59.3, 62.3, 61.2, 59.3]
+
+print(life_expectancy)
+```
+
+We can find the corresponding life expectancy of, for example, "Botswana". First find the index position of Botswana:
+
+```{python}
+
+botswana_index = southern_african_countries.index("Botswana")
+
+print(botswana_index)
+```
+
+The index of Botswana is 1. We can access the corresposing life expectancy:
+
+```{python}
+life_expectancy[botswana_index]
+```
+
+The life expectancy of Botswana. But this is not efficient if we have large data. This where dictionaries come in:
+
+```{python}
+southern_africa = {"Angola":61.6, 
+                   "Botswana":61.1,
+                   "Lesotho":57.1,
+                   "Malawi":53.1,
+                   "Mozambique":62.9,
+                   "Namibia":59.3}
+
+print(southern_africa)
+```
+
+We have created a dictionary named southern_africa. A dictionary has `keys` and `values` and this is always in pairs. For example, we have `Angola` as a key with its corresponding value `61.6`. 
+
+You can find values of each keys:
+
+```{python}
+print(southern_africa["Malawi"])
+```
+
+
+Of Namibia:
+
+```{python}
+print(southern_africa["Namibia"])
+```
+
+You can find keys of all keys:
+
+```{python}
+print(southern_africa.keys())
+```
+
+If you look at the `southern_africa` dictionary, we did not include all other countries in the region. We may need to add, let say, Zimbabwe:
+
+```{python}
+southern_africa["Zimbabwe"] = 59.3
+
+print(southern_africa)
+```
+
+You can see that the dictionary has been updated to include Zimbwabwe.
+
+Suppose  demographer pouint out that the values of Botswana is outdated; that the life expectancy of the country has increased from 61.1 to 63! We can update this information
+
+```{python}
+southern_africa["Botswana"] = 63
+
+print(southern_africa["Botswana"])
+```
+
+The value of Botswana has been changed. 
+
+What if we want to add new information in the dictionary? For example, we may want to add the capital cities of the countries in the `southern_africa` dicitionary:
+
+```{python}
+southern_africa_2 = {"Angola": {"life_expectancy": 61.6, "capital":"Luanda"},
+                     "Botswana": {"life_expectancy": 61.1, "capital":"Gaborone"},
+                     "Lesotho": {"life_expectancy": 57.1, "capital":"Maseru"},
+                     "Malawi": {"life_expectancy": 53.1, "capital":"Lilongwe"},
+                     "Mozambique": {"life_expectancy": 62.9, "capital":"Maputo"},
+                     "Namibia": {"life_expectancy": 59.3, "capital":"Windhoek"}}
+
+print(southern_africa_2)
+```
+
+As you can see in the results, the dictionary has been updated. 
+
+#### DataFrames
+
+The previous data structures we have discussed (lists, np.arrays, dictionaries) can handly limited amount of data. In the real world, most data comes big, in a tabular format: with columns and rows. In Python, we use we use the `pandas` package to handle data in a tabular format. You need to install it first:
+
+```{python}
+#| eval: false
+pip install pandas
+```
+
+
+Then import `pandas`:
+
+```{python}
+import pandas as pd
+```
+
+Let return to the previous lists that we have created: list of Southern African countries and corresponding life expectancy:
+
+```{python}
+
+country = ["Angola", "Botswana", "Lesotho", "Malawi", "Mozambique", "Namibia", "South Africa", "Swaziland", "Zambia", "Zimbabwe"]
+
+print(country)
+```
+
+
+Create life_expectancy list:
+
+```{python}
+life_expectancy = [61.6, 61.1, 57.1, 53.1, 62.9, 59.3, 59.3, 62.3, 61.2, 59.3]
+print(life_expectancy)
+```
+
+Let's add one more list of, for example, population of each country:
+
+```{python}
+population = [500, 600, 1000, 150, 490, 740, 300, 781, 610, 504]
+
+print(population)
+```
+
+From these three lists, we can create a DataFrame using `pandas`:
+
+```{python}
+southern_africa_df = pd.DataFrame({"country_name":country, "life_expect": life_expectancy, "pop":population})
+
+print(southern_africa_df)
+```
+
+We have a DataFrame with three columns: country_name, life_expect, and pop and 10 rows (observations), where each row represent country. You can use the `.head()` function to view the first observations
+
+
+```{python}
+print(southern_africa_df.head())
+```
+You can check how many columns and rows in the DataFrame by using `.info()` function:
+
+```{python}
+print(southern_africa_df.info())
+```
+
+You can get more information of your DataFrame by using `.describe()` function, it will return the summary statistics of all numeric columns:
+
+```{python}
+print(southern_africa_df.describe())
+```
+
+You can subset both rows and columns, to return only those you are interested in. Let's say you want to select only `country_name` and `pop` columns, you can do this by wrapping the DataFrame within double square brackets (`[[]]`) and specify those coulumns:
+
+```{python}
+print(southern_africa_df[["country_name", "pop"]])
+```
+
+You can also select rows. For example, subset observations from Angola and save as a new DataFrame named `angola`:
+
+```{python}
+angola = southern_africa_df[southern_africa_df["country_name"] == "Angola"]
+
+print(angola)
+```
+Select observations from Angola and Zimbabwe:
+
+```{python}
+angola_zim = southern_africa_df[southern_africa_df["country_name"].isin(["Angola", "Zimbabwe"])]
+print(angola_zim)
+```
+
+Subset observations where life expectancy is below 60:
+
+```{python}
+low_life_expect = southern_africa_df[southern_africa_df["life_expect"] < 60]
+
+print(low_life_expect)
+```
+
+There are many other ways in which you can manipulate, transform and analyse DataFrame, and `pandas` provide many methods to handle DataFrames. We will dive deepr into DataFrames and Pandas in [Week 3](week-3.qmd)
+
+
+In this chapter we have discussed different data structures that can hold data:
+
+- Lists
+
+- Numpy Arrays
+
+- Dictionaries
+
+- DataFrames
+
+In the next chapter, we explore various ways in which we can visualise data. 

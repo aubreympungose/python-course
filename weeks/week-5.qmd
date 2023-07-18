@@ -1,0 +1,153 @@
+---
+title: "Importing Data and Reproducible Workflows"
+code-copy: true
+code-line-numbers: true
+tidy: true
+---
+
+All along we have been working with data stored as packages in R or fake data. But most of the time data is stored locally on our computers either as .csv, Excel, .txt, pdf, etc. There are functions to import these data types, both in Base R and external packages. But first you will need to tell R the location of the data.
+
+## 6.1 Importing data
+
+To import csv, you can use the `read.csv()` function. In my case I have dataset saved as "epi_data.csv" in the the folder named "data":
+
+```{r}
+
+data <- read.csv("data/epi_data.csv")
+
+head(data)
+```
+
+
+Let us say te same data is saved in as aan Excel workbook with an extension .xlsx, we can use `reaedxl` package:
+
+```{r, eval=FALSE}
+install.packages("reaedxl")
+```
+
+```{r}
+library(readxl)
+
+excel_data <- read_excel("data/epi_data.xlsx")
+
+head(excel_data)
+```
+
+
+There are other arguments that can be added; for example if you data is on sheet number 2 of Exel workbook, you will add an `sheet = 2` argument. 
+
+
+You can import data from other statistical software as well:
+
+- Read STATA files: STATA data files end with .dta extensions: `read_dta()` from `Haven` package can import this data type
+
+- Read SPPS files: SPSS files end with .sav extension: `read_sav()` function, also from `Haven` can import it.
+
+R can import other many data types such shapefiles, images, PDFs and data from the web.
+
+
+## 6.2 Importing Multiple files
+
+Sometimes there are many files and it would be time consuming to load each file. I will show you the following with instructions
+
+```{r}
+## First list the path where files are stored
+
+path <- list.files("data", pattern = ".csv$", full.names = TRUE) 
+
+## Read all the files by using lapply function
+data_files <- lapply(path, read.csv)
+```
+
+now you have a list with 2 elements. You can extract each element:
+
+```{r}
+first_df <- data_files[[1]]
+
+head(first_df)
+```
+
+```{r}
+second_df <- data_files[[2]]
+
+head(second_df)
+```
+        
+
+## 6.3 Exporting data
+
+After you have cleaned and prepared your data for analysis, you may want to save cleaned data. 
+
+```{r}
+gapminder <- gapminder::gapminder
+
+gapminder_2007 <- gapminder |> 
+  dplyr::filter(year == 2007)
+
+write.csv(gapminder_2007, "data/gapminder_cleaned.csv")
+```
+
+Not that your my path "data/gapminder_cleaned.csv" will be different yours. 
+
+
+
+##6.4 Setting working directories
+
+When working on a project, it may be important to set a working directory, where all you files are stores: data, code, reports, etc. You can use `setwd()` function. Let's say we have a folder with all the files:
+
+- my_folder
+
+    - data
+    - code
+    - report
+    
+You will need to set a working directory as:
+
+```{r}
+setwd("C:/Users/mpungosea/my_folder")
+```
+
+To navigate to a specific file, you will have to use relative paths. You starting path would be "my_folder". If you want to load data, you would have to navigate to "data" directory:
+
+```{r}
+data <- read.csv("data/epi_data.csv")
+
+head(data)
+```
+
+
+## 6.5 Managing reproducible workflows
+
+The problem with the above approach, of setting working directories, is that your directories are local to your computer. We share code with other people: reviewers, team members, etc. We also collaborate with one another. Now imagine that I have "C:/Users/mpungosea/my_folder" as my working directory. Will this work on your computer? **NO!** In Other instances, you may move files; if you run the code and set the director, R will return an error. This means that your workflows are not reproducible and it is not an efficient way of working. 
+
+Enter RStudio Projects. In Projects, we want to keep all the files that were working with and making it easier to navigate directories and share your work. To start a new project, follow these steps:
+
+
+![](images/week_5/r_project_1.png)
+
+![](images/week_5/r_project_2.png)
+![](images/week_5/r_project_3.png)
+![](images/week_5/r_project_4.png)
+![](images/week_5/r_project_5.png)
+
+
+
+Inside the project, you can add the follwoing directories/folders:
+
+- data: to save all your data files: raw data, cleaned data, analysis data, etc
+
+- code: save all your scripts: data cleaning, analysis, etc
+
+- outputs: figures, tables, etc
+
+- reports: draft reports final reports, etc
+
+- bibliogaphy: a bibtex file with the list of references. 
+
+In one of my projects, this is how it looks:
+
+![](images/week_5/sample_project.png)
+
+Every time you work on the project, you then open the `.Rproj` file, it will have all the files associated with the project:
+
+![](images/week_5/sample_project_2.png)

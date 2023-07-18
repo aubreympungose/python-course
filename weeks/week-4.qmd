@@ -1,0 +1,338 @@
+---
+title: "5 Data Manipulation Part 2"
+code-copy: true
+code-line-numbers: true
+tidy: true
+code-annotations: below
+---
+
+Last week we introduced the basics of data manipulation using `dplyr`. This week I want u to continue to intermediate data manipulation in `dplyr`. 
+
+
+## 5.1 Renaming columns
+
+You will notice that the column names in the `gapminder` dataset do not follow *tidy* principles. Naming things in a *tidy* we follow these principles:
+
+- No spaces between characters
+
+- all names should be in lower cases
+
+- only use underscore (_) to separate characters.
+
+The [tidyverse style guide](https://style.tidyverse.org/). In our columns, the column names `lifeExp` are `gdpPercap` need to be renamed. We will use `rename()` function within `dplyr`:
+
+```{r, warning=FALSE}
+
+### Load tidyverse
+
+library(tidyverse)
+
+### load the data
+
+gapminder <- gapminder::gapminder
+
+gapminder$country <- as.character(gapminder$country)
+
+gapminder$continent <- as.character(gapminder$continent)
+```
+
+then use `rename()` to change column names; we will save the new dataframe as `gapminder_new`
+
+```{r}
+
+gapminder_new <- gapminder |> 
+  rename(life_expectancy = lifeExp,
+         gdp_per_capita = gdpPercap)
+
+head(gapminder_new)
+```
+
+The dataframe is updated with changed column names. However, when working with data with many columns, it would be time consuming to change each column. Fortunately, within the package `janitor` there is function called `clean_names` that change all the column names into a tidy way. Install the janitor package first:
+
+```{r, eval=FALSE}
+
+install.packages("janitor")
+```
+
+After install it load it: and use the `clean_names()` function:
+
+```{r, warning=FALSE}
+library(janitor)
+
+gapminder_new <- clean_names(gapminder)
+
+head(gapminder_new)
+```
+
+See that untidy column names were changed automatically.
+
+## 5.2 Converting column data types
+
+Remember we discussed 3 data types:
+
+- character
+
+- numeric
+
+- logical
+
+In a dataframe, you can find the data type of the column by using `class()` function
+
+```{r}
+class(gapminder$country)
+
+class(gapminder$gdpPercap)
+```
+
+You can also use the `str()` to find the data types of all columns in the dataframe:
+
+```{r}
+str(gapminder)
+```
+
+Sometimes you may find that the all values in a column would be saved as character when they are supposed to be numeric. You can change them as using `as.numeric()` function. Let us simulate some fake data:
+
+
+```{r}
+gender <- c("male", "female", "female", "male", "female")
+
+age <- c("18", "30", "45", "21", "54")
+
+example_df <- data.frame(gender, age)
+
+example_df
+```
+
+In the example_df dataframe, you can see that the age column has been stored as character, which doesn't make any sense:
+
+```{r}
+str(example_df$age)
+```
+
+Convert this:
+
+```{r}
+example_df$age <- as.numeric(example_df$age)
+
+str(example_df$age)
+```
+
+If you want to convert it back to character, you can use `as.character()` function:
+
+```{r}
+example_df$age <- as.character(example_df$age)
+
+str(example_df$age)
+```
+
+The only time this will not work is when you try to convert a character column such as `gender` into numeric; try it. Experiment with converting various column type with the gapminder dataset.
+
+### 5.2.1 Factors
+
+There is another data type we have not discussed: factors or what may be called categorical data. Factors are like characters, except that they have integers that correspond to characters. In our example_df dataframe, we may want to make the column gender a factor, where 1 = male, 2 = female.
+
+```{r}
+
+head(example_df)
+
+example_df$gender <- factor(example_df$gender, levels = c("male", "female"))
+
+str(example_df)
+```
+
+The gender column has been changed to factor, with 2 levels. 
+
+Let us try to change the continent column in the gapminder dataset, we will try the `dplyr` method:
+
+```{r}
+gapminder <- gapminder |> 
+  mutate(continent_factor = factor(continent))
+
+str(gapminder$continent_factor)
+```
+Here we have used `mutate()` to create a new column named `continent_factor` that is a factor. It has 5 levels, you can check this using the `levels()` function:
+
+```{r}
+levels(gapminder$continent_factor)
+```
+
+Creating new columns instead of changing the existing one is important in some instances, especially when you want to compare the data. 
+
+The [`focrcats` package](https://forcats.tidyverse.org/) within `Tidyverse` was specifically create for factors, you may want to visit it to learn more about factors. 
+
+## 5.3 Create a new categorical column from a numeric column
+
+In many cases, we may want to create a new categorical column that takes the conditions from a numeric column. For example, example, in the following ages:
+
+- 1-12 = child
+
+- 13-17 = adolescent
+
+- 18-34 = young adults
+
+- 35-55 = adults
+
+- Over 55 = older adults
+
+We can use the `case_when()` function within `mutate()` to create this column. Let us generate some fake data;
+
+```{r}
+set.seed(45)
+###simulate a character vector with a length of 50
+gender <- sample(c("male", "female"), size = 50, replace = T, prob = c(.45, .55))
+
+
+## simulate a numeric vector, with a length of 50, from ages 1 to 75
+age <- sample(1:75, size = 50)
+
+fake_df <- tibble(gender, age)
+
+head(fake_df)
+```
+
+Then compute a new column:
+
+```{r}
+fake_df <- fake_df |> 
+  mutate(age_group = case_when(
+    age >= 1 & age <=12 ~ "child",
+    age >= 13 & age <= 17 ~ "adolescent",
+    age >= 18 & age <= 34 ~ "young adult",
+    age >= 35 & age <= 55 ~ "adult",
+    age > 55 ~ "older adult"
+  ))
+
+fake_df
+```
+
+Plot the new column:
+
+```{r}
+fake_df |> 
+  ggplot(aes(x = age_group)) +
+  geom_bar() +
+  theme_minimal()
+```
+
+
+We have created a new column called `age_group` using the age column. 
+
+Experiment with the gapminder data. We may want to group countries according to their life expectancy based on the following rules:
+
+- if life expectancy of a country is lower than the world average, we will classify it as 'low life expectancy'
+
+- if life expectancy of a country is higher than the world average, we will classify it as 'high life expectancy'
+
+We will only use observations from the year 2007:
+
+```{r}
+gapminder_2007 <- gapminder |> 
+  filter(year == 2007)
+```
+
+Create a new column:
+
+```{r}
+gapminder_2007 <- gapminder_2007 |> 
+  mutate(life_expect_category = case_when(
+    lifeExp < mean(lifeExp) ~ 'low life expectancy',
+    lifeExp > mean(lifeExp) ~ 'high life expectancy'
+  ))
+```
+
+We have created added a new column called `life_expect_category`; plot this column:
+
+```{r}
+gapminder_2007 |> 
+  ggplot(aes(x = life_expect_category)) +
+  geom_bar() +
+  theme_minimal()
+```
+
+### 5.4 Missing data
+
+Data rarely comes clean, and sometimes data can contain missing value. In R missing values are stored as `NA`. Once we go to the introduction to  statistics section, we will deal with missing values.
+
+
+### 5.5 Reshaping data
+
+There are 2 types of dataframes: wide and long formats. I will use examples to illustrate both types. 
+
+Suppose we have data containing GDP increase rate of South Africa from 2010 to 2020 Let us create a _long_ format of this dataframe:
+
+```{r}
+year <- c(2010:2020)
+  
+gdp_rate <- c(2.8, 3.1, 3.3, 2.2, 1.9, 1.3, 1.5, 0.6, 0.8, 0.2, -7.0)
+
+sa_gdp_long <- data.frame(year, gdp_rate)
+
+sa_gdp_long
+```
+
+The dataframe is in long format: We have one column reprenting all years, and gdp_rate column representing all values of GDP growth rate. What if we want to change to a _wide_ format? We can use `pivot_wider()` function within `tidyr` package, also a part of `tydiverse`:
+
+```{r}
+sa_gdp_wide <- pivot_wider(sa_gdp_long,  names_from = year, values_from = gdp_rate)
+
+sa_gdp_wide
+```
+
+You can see that in a wide format, each year is a column.
+
+### 5.5.1 Excercise
+
+In the gapminder data do the following:
+
+- Select country, year and life expectancy columns
+
+- filter rows rows from South Africa, Zimbabwe and Mozambique
+
+- reshape this data to a wide format
+
+## 5.6 Joining data
+
+You my have 2 dataframes with corresponding ID columns but with other different column names. Create a first dataframe:
+
+```{r}
+
+country_name <- c("South Africa", "Zimbabwe", "Mozambique", "Botswana", "Eswatini", "Lesotho", "Namibia")
+
+set.seed(187)
+population <- sample(5000:15000, 7)
+
+pop_df <- data.frame(country_name, population)
+
+pop_df
+```
+
+Create a second dataframe:
+
+```{r}
+country_name <- c("South Africa", "Zimbabwe", "Mozambique", "Botswana", "Eswatini", "Lesotho", "Namibia")
+
+set.seed(50)
+avg_age <- sample(23:35, 7)
+
+age_df <- data.frame(country_name, avg_age)
+
+age_df
+```
+
+Now we have 2 data frames: pop_df with a fake data on countries' population and the age_df with a fake data on countries' average age. The common name in both dataframes is `country_name`. We will use `merge()` function to join 2 dataframes:
+
+```{r}
+combined_df <- merge(pop_df, age_df, by = "country_name")
+
+combined_df
+```
+
+Bingo!
+
+There is more to joining data: `merge()` is a Base R funcion. There are other options of joining data using `dplyr`; see [this guide](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+
+
+
+
+
+

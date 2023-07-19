@@ -11,441 +11,138 @@ code-annotations: below
 
 ## Learning objectives
 
--   Understand dataframes
+-   Understand DataFrames
 
--   Manipulate, transform and analyse dataframes
+-   Manipulate, transform and analyse DataFrames
 
 ## 4.1.1 Introduction
 
-Dataframes, as we saw [the previous section](/weeks/week-2.html), is a tabular data format, with columns and rows. Columns are *variable* names and rows are individual *observations*. 
+Dataframes, as we saw [the previous section](week-2.qmd), is a tabular data format, with columns and rows. Columns are *variable* names and rows are individual *observations*. Just like other data structures dicussed in previous chapters, a DataFrame handles different data types:
+- int64: whole numbers (e.g age = 30)
 
-Let us a basic data frame with three columns: country, life expectancy, and population of Southern African countries. First, we create individual vectors:
+- float64; numbers with decimals (e.g. height = 1.9, temperature = 33.0)
 
-```{r create a dataframe}
+- datetime64: date and time
 
-# Create a character vector
-country_name <- c("Angola", "Botswana", "Lesotho", "Malawi", "Mozambique", "Namibia", "South Africa", "Swaziland", "Zambia", "Zimbabwe")
+- category: catogories or factors (e.g. gender = male, female; race = black, white, ...)
 
-country_name
+- bool: True or False
 
-## Create a numeric vector
-
-life_expectancy <- c(61.6, 61.1, 57.1, 53.1, 62.9, 59.3, 59.3, 62.3, 61.2, 59.3)
-
-life_expectancy
-
-## create another numeric vector
-
-population <- c(34500000, 2590000, 228000, 19890000, 32080000,  2530000, 59390000, 1190000, 19470000, 1599000)
-```
-
-Because we have 3 vectors of equal length, we can create a dataframe, using a `data.frame()` function:
-
-```{r first_dataframe}
-
-southern_africa_df <- data.frame(country_name, life_expectancy, population) #combine two vectors to create a dataframe
-
-southern_africa_df ## print the dataframe
-```
-
-A dataframe is basically made of vectors (columns). In the `southern_africa_df` dataframe, we have `r ncol(southern_africa_df)` columns: `country_name`, `life_expectancy` `population`. We can extract these elements using the `$` sign:
-
-```{r extract vector}
-southern_africa_df$country_name
-
-southern_africa_df$life_expectancy
-
-southern_africa_df$population
-```
+- object: string and mixed data types
 
 
-## 4.1.3 Using `dplyr`
+According to Hadley Wickman, a DataFrame should be in a *tidy* format:
 
-We will use  the `dplyr` package to manipulate data. `dplyr` is part of `tidyverse` meta-package and is mostly used to clean, manipulate and transform dataframes. `dplyr` has 5 main verbs/functions:
-
--   `select()`: for selecting particular columns in a dataframe
-
--   `filter()`: for sub-setting rows based on the specified criteria
-
--   `arrange()`: sort rows/observations based (ascending/descending)
-
--   `summarise()`: for summary statistics
-
--   `mutate()`: create new columns based on the manipulation of the existing columns.
-
-- `group_by()`: get aggregate statistics by a category
-
-```{r load dplyr, warning=FALSE}
-library(dplyr)
-```
-
-You can also load `dplyr` by loading the `tidyverse` package; this will load all the packages in in `tidyverse at once. This is useful, for example, when you want to clean and visualise data:
-
-```{r load tidyverse_2, warning=FALSE}
-library(tidyverse)
-```
-
-Note that you will net to install tidyverse if you did not install it from the previous section:
-
-```{r install tidyverse, echo=FALSE}
-
-install.packages("tidyverse")
-```
+> 1.  Each variable is a column; each column is a variable.
+> 2.  Each observation is row; each row is an observation.
+> 3.  Each value is a cell; each cell is a single value. 
 
 
-Let us load the `gapminder` dataset that we used from the previous week. If you did not install, you will need to do so.
+The pandas package provide a toolbox of working analysing, querying and transforming DataFrames. We will continue working with the `gapminder dataset. First load pandas and read the data, saving it as "gapminder":
 
-```{r load gapminder}
-library(gapminder)
-```
+```{python}
+import pandas as pd
 
-Than assign it to the object, `gapminder`, using the `<-` operator:
-
-```{r assign gapminder}
-
-gapminder <- gapminder
+gapminder = pd.read_csv("https://raw.githubusercontent.com/aubreympungose/data-science-course/main/weeks/data/gapminder.csv")
 
 ```
 
-Write the following code to change the country and continent from factor to character, I will explain this in the next chapter:
 
-```{r to character}
-gapminder$country <- as.character(gapminder$country)
+Let's examine the data by looking at few observations:
 
-gapminder$continent <- as.character(gapminder$continent)
+```{python}
+gapminder.head()
+```
+
+You can check how many variables are in the data and what type of data:
+
+```{python}
+gapminder.info()
+```
+
+You can see that `gapminder` has 6 columns and 1704 rows. The columns in the dataset are:
+
+- country: Simply the country
+
+- continent: Continent
+
+- year: The year data was collected
+
+- lifeExp: Life expectancy of a country in year
+
+- pop: Population of the country in a year
+
+- gdpPercap: Gross Domestic Product of a country in a year
+
+
+You can also print the columns in the dataset by using `.columns` attribute. 
+
+```{python}
+gapminder.columns
+```
+You can get the number of rows by using `.index` attribute:
+
+```{python}
+gapminder.index
 ```
 
 
-Now you have an object, which is a dataframe, called `gapminder`, you can see it in the `Environment` pane in RStudio. It shows that it has `ncol(gapminder)` columns/variables and `nrow(gapminder)` observations/rows
+## MANIPULATING COLUMNS
 
-![`gapminder` dataframe in Environment pane](images/environment_pane.png)
+#### Access/Select columns
 
-You can use the `str()` fucntion to get the structure of the dataframe:
+We may be interested in some of the columns in the `gampminder` dataframe, let say, for example, "country" only. You can select a specific column by taking  the name of the DataFrame, followed by square brackets (`[]`) and passing the name of the "column" inside square brackets:
 
-```{r structure of gapminder}
-
-str(gapminder)
+```{python}
+gapminder["country"]
 ```
 
-We have 6 variables:
+To Access multiple, columns you follow the same method as above, except that you wrap column names list (`[]`), so you end up with double sqaure brackets. Let's say we want to select "country", "pop", and "year" columns:
 
-- "country" 
-
-- "continent" 
-
-- "year"      
-
-- "lifeExp": life expectancy of a country  
-
-- "pop": population     
-
-- "gdpPercap": GDP per capita
-
-You can get a sample of the first observations/rows using `head()` function:
-
-```{r head}
-head(gapminder)
-```
-
-### 4.1.4 `select()` function
-
-We may be interested in some of the columns in the `gampminder` dataframe, let say, for example, "country" and "pop" variables and discard others; we use the `select()` function:
-
-```{r select}
-library(dplyr)
-select(gapminder, "country", "pop")
-```
-
-R return only the country and population variables. `select()` function only return the variables/columns we are interested in:
-
-![](images/visualise_select.png)
-
-
-### The pipe operator (`|>`)
-
-The best way to work with R, esepcially tidyverse, is using the pipe (`|>`) operator. The pipe connect various tasks, for example:
-
-```{r pipe}
-gapminder |>
-  select(country, pop)
-```
-
-The pipe chains your operations. It says:
-
-- Take `gapminder` dataframe
-
-- Then using the `select()` function to select only pop and country columns
-
-You will that pipe becomes important when having multiple chains of functions at once.
-
-You will notice that in other sources: web, books, etc. have %>% instead of |>. It works the same way. The |> is new. %>% comes from `mgttr`, an external package, so you needed to load it first before using it. The  native pipe |> is built in R, so it there is no need to load it. So, we will stick with the |>.
-
-In your RStudio, follow these instructions:
-
-- Go to 'Tools' and click on 'Global Options'
-
-- Navigate to 'Code' on the left pane
-
-- Then select the fourth option, "use native pipe operator, |>"
-
-- Click 'Apply'
-
-You can use the short cut `Ctrl + Shift + M ` If you using Windows to insert the pipe instead of typing it. If you are using Mac, use `Cmd + Shift + M`. 
-
-### 4.1.4 Return to `select()` function
-
-As I have said, `select()` only return the columns specified
-
-
-```{r pipe magttr}
-
-gapminder %>% 
-  select(country, pop)
-```
-
-Also, notice that we selected "country' and "pop" columns but did not save them and assigned to an object. To store the results into an object, we have to use assignment operator (`<-`):
-
-```{r assign}
-gapminder_selected <- gapminder |>
-  select(country, pop)
-
-gapminder_selected # print
-```
-
-Now we have saved results as `gapminder_selected`, and we can do other analysis with this object because we have saved it. So, in a nutshell, when you run a code without assigning results into an object, using the `<-` operator, **results will not be saved but will be printed**.
-
-You can also select columns based by index/position. Let us select only 1st and 3rd coulmns
-
-```{r select index}
-gapminder |> 
-  select(1, 3)
-```
-
-Or you can select a range of columns
-
-```{r select_range}
-gapminder |> 
-  select(country:year)
-```
-
-Here, we have select columns from country to year only.
-
-You can also exclude certain columns by simply adding the minus (-) sign; let say we want to exclude the `gdpPercap` from the dataframe
-
-```{r select_minus}
-gapminder |> 
-  select(-gdpPercap)
-```
-
-### 4.1.5 `filter()` function
-
-You may be interested in observations/rows that meet certain conditions. We use `filter()` function to return the list that meet our conditions. `filter()` has several operators:
-
-- `==`: equal to
-
-- `!=`: not equal to
-
-- `>`: greater than
-
-- `<`: less than
-
-- `>=`: greater than or equal to
-
-- `<=`: less than or equal to
-
-Let us filter based on the continent column. How many continent are there? Create a basic table first
-
-```{r continent_table}
-table(gapminder$continent)
-```
-
-There are five continents. Let us filter only observations from the African continent:
-
-```{r filter}
-
-africa_gapminder <- gapminder |> 
-  filter(continent == "Africa")
-
-africa_gapminder  # print 
+```{python}
+gapminder[["country", "pop", "year"]]
 ```
 
 
-`africa_gapminder` object is a dataframe we have just created, with only countries from the African continent. What `filter()` does is to return observations/rows that only meet our conditions:
+You can alse access columns by their index using `.iloc()` function. Remember that an index in Python starts at 0, for example, to access the first column
 
-![](images/visualise_filter.png)
-
-Let us filter a numeric column; for example, we may want to filter countries with population of above 50 million and assign results to an object named high_pop:
-
-```{r filter numeric}
-
-high_pop <- gapminder |> 
-  filter(pop > 50000000)
-
-high_pop ## print
+```{python}
+gapminder.iloc[:, 0]
 ```
 
-You can also combine 2 conditions. Let us say we want:
+In the above code, the colon (`:`) specify that we want to retun all rows; you will more abouth this when selecting by both columns and rows.
 
-- countries in Africa
+To access multiple columns, you pass a list of indexes of columns. For example, select the 1st, 3rd and 5th columns:
 
-- the year 2007
-
-```{r filter_multiple}
-africa_2007 <- gapminder |> 
-  filter(continent == "Africa", year == 2007)
+```{python}
+gapminder.iloc[:, [0, 2, 4]]
 ```
 
-Filter rows from the Africa OR Asia
+Suppose you want access a range of of columns, for example, from the 1st to the 3rd column:
 
-```{r filter_OR}
-gapminder |> 
-  filter(continent == "Africa" | continent == "Asia")
+```{python}
+gapminder.iloc[:, 0:3]
 ```
 
-Sometimes you may need to filter multiple rows, let say, more than 5 countries. It would be inconvinient to type `country == "..."` five times. This is where the `%in%` operator is useful:
+### Rename columns
 
-```{r the in operator}
-africa_2007 |> 
-  filter(country %in% c("South Africa", "Zimbabwe", "Ghana", "Tanzania", "Tunisia"))
+You may need to change column names. For example, in the `gapminder` dataset, we may change the "pop" column to population. You will use the `.rename()` function, pass the column argument, and specify column names within the dictionary (`{"old_name":"new_name"}`). We will assign the results to the new DataFrame named `gapminder_new`:
+
+```{python}
+gapminder_new = gapminder.rename(columns = {"pop":"population"})
+
+gapminder_new.head()
 ```
 
-### 4.1.6 `arrange()` function
+The "pop" column has been changed to "population".
 
-`arrange()` function is self-explanatory: it sort values into ascending or descending order
+You can also rename multiple columns; in this case, rename "lifeExp" and "gdpPercap":
 
-```{r arrange}
+```{python}
+gapminder_new = gapminder.rename(columns = {"lifeExp":"life_expectancy", "gdpPercap":"gdp_pc"})
 
-africa_2007 |> 
-  arrange(lifeExp) |> 
-  head(n = 10) ## show the first 10 observations
-```
-
-The default sorting is ascending order; you can sort into descending order by using `desc()` function within `arrange()`:
-
-```{r arrange_descending}
-africa_2007 |> 
-  arrange(desc(lifeExp)) |> 
-  head(n = 10) ## show the first 10 observations
-```
-
-### 4.1.7 `summarise()`
-
-We use the `summarise()` function to get the summary statistics. Common statistics include mean, median, standard deviation, minimum, maximum, etc.
-
-```{r mean}
-gapminder |> 
-  summarise(mean_life_exp = mean(lifeExp))
-```
-
-Standard deviation:
-
-```{r SD}
-gapminder |> 
-  summarise(sd_life_exp = sd(lifeExp))
-```
-
-You can get various summary statistics by combing multiple arguments within summarise():
-
-```{r summarise multiple}
-gapminder |> 
-  summarise(mean_life_exp = mean(lifeExp),   
-            sd_life_exp = sd(lifeExp),
-            min_life_exp = min(lifeExp),
-            max_life_exp = max(lifeExp))
-```
-
-Magic! 
-
-
-### 4.1.8 Aggregate  Statisitcs with `group_by()`
-
-In many instances we are interested in aggregate statistics, that is, summary statistics by a category. Say you want to group rows by the continent column then get the use `summarise()` to get average GDP per capita for each continent. This is where the `group()` function is useful:
-
-```{r group_by}
-
-## First create a dataframe of the year 2007 only
-
-gapminder_2007 <- gapminder |> 
-  filter(year == 2007)
-
-## Then use group_by()
-
-gapminder_2007 |> 
-  group_by(continent) |> 
-  summarise(gdp_continent = mean(gdpPercap)) |> 
-  arrange(desc(gdp_continent))  ## arrange by gdp_continent into descending
+gapminder_new.head()
 ```
 
 
-### 4.1.9 Create columns with `mutate()`
 
-mutate create new columns based on the existing columns. In most cases we want to transform the data. For example, we know that the GDP per capita is calculated from dividing the total GDP by a population. We may want to create a new column named `gdp_total` with a formula (`gdp_total = gdpPercap * pop)`. We can use `mutate()`:
-
-```{r mutate gdp}
-gapminder_2007 <- gapminder_2007 |> 
-  mutate(gdp_total = gdpPercap * pop)
-
-head(gapminder_2007)
-```
-
-You can see that the new column named `gdp_total` has been added. 
-
-You can also combine multiple arguments within `mutate()`:
-
-```{r mutate_2}
-gapminder_2007 <- gapminder_2007 |> 
-  mutate(gdp_total = gdpPercap * pop,
-         life_exp_squared = lifeExp ** 2)
-```
-  
-### Wraping all up
-
-The pipe operator is very useful. You can chain multiple operations into a single code. Let say we want to do the following:
-
-- Find country called South Africa
-
-- find average life expectancy by year
-
-- Arrange by year into a descending order
-
-```{r multiple operation}
-gapminder |> 
-  filter(country == "South Africa") |> 
-  group_by(year) |> 
-  summarise(life_exp = mean(lifeExp)) |> 
-  arrange(desc(year))
-```
-
-You can take it even further by creating a plot. You know that BRICS countries are Brazil, Russia, India, China and South Africa. You want to find trends in life expectancy. Note that there is no data for Russia
-
-```{r line_plot_sa}
-gapminder |> 
-  filter(country %in% c("Brazil", "Russia", "India", "China", "South Africa")) |> 
-  select(country, year, lifeExp) |> 
-  ggplot(aes(x = year, y = lifeExp, colour = country)) +
-  geom_line(linewidth = 1.5) +
-  theme_minimal() +
-  scale_x_continuous(breaks = c(1950, 1960, 1980, 1990, 2000, 2007)) +
-  theme(legend.position = "bottom",
-        panel.grid.minor = element_blank()) +
-  labs(title = "Trends in life expectancy of BRICS country",
-       x = "",
-       y = "Life expectancy (in years)",
-       caption = "Data source: Gapminder")
-```
-
-Wait a minute: why did south Africa's life expectancy started to decline rapidly from the 1990s? One plausible reason would be the impact of HIV/AIDS and lack of antiretrovirals (ARVs). Welcome to data analysis.
-
-You can see above the efficiency of the pipe operator.  Think of the pipe operator as:
-
-![](images/pipe.gif)
-
-OR
-
-![](images/pipe_bake.gif)
-
-We have introduced to the basics of data manipulation in R using the `dplyr` package in R. While we have covered a lot, the path is long. However, once you master these basic functions, you will not struggle in the following sections. These resources may be helpful:
-
-- [R for Data Science](https://r4ds.hadley.nz/). Chapter 4 
-
-- [Data transformation with dplyr](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf)

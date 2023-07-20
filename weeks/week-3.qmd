@@ -44,7 +44,6 @@ The pandas package provide a toolbox of working analysing, querying and transfor
 import pandas as pd
 
 gapminder = pd.read_csv("https://raw.githubusercontent.com/aubreympungose/data-science-course/main/weeks/data/gapminder.csv")
-
 ```
 
 
@@ -144,5 +143,31 @@ gapminder_new = gapminder.rename(columns = {"lifeExp":"life_expectancy", "gdpPer
 gapminder_new.head()
 ```
 
+### Making new columns, Removing columns
 
+To create a new column you simply take the name of the dataframe, pass the string of the new columnn inside sqaure bracket, and assign values:
 
+```{python}
+gapminder["new_column"] = 20
+
+gapminder.head()
+```
+There is a new column added that has values of 20. 
+
+In many cases, we may need to create a new column resulting from manipulating other columns. For example, we know that the GDP per capita is calculated from dividing the total GDP by a population. If we want to create a new column of the total GDP, we need to multiply GDP per capita by the population size of the country:
+
+```{python}
+gapminder["total_gdp"] = gapminder["gdpPercap"] * gapminder["pop"]
+
+gapminder.head()
+```
+
+We have a new column ("total_gdp") added to the `gapminder` DataFrame. 
+
+You can remove columns by using `.drop() function:
+
+```{python}
+gapminder = gapminder.drop(["total_gdp", "new_column"], axis = 1)
+
+gapminder.head()
+```

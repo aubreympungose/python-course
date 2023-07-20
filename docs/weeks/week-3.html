@@ -241,6 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#manipulating-columns" id="toc-manipulating-columns" class="nav-link" data-scroll-target="#manipulating-columns">MANIPULATING COLUMNS</a>
   <ul class="collapse">
   <li><a href="#rename-columns" id="toc-rename-columns" class="nav-link" data-scroll-target="#rename-columns">Rename columns</a></li>
+  <li><a href="#making-new-columns-removing-columns" id="toc-making-new-columns-removing-columns" class="nav-link" data-scroll-target="#making-new-columns-removing-columns">Making new columns, Removing columns</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -820,6 +821,248 @@ Name: country, Length: 1704, dtype: object</code></pre>
 <th data-quarto-table-cell-role="th">life_expectancy</th>
 <th data-quarto-table-cell-role="th">pop</th>
 <th data-quarto-table-cell-role="th">gdp_pc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1952</td>
+<td>28.801</td>
+<td>8425333</td>
+<td>779.445314</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1957</td>
+<td>30.332</td>
+<td>9240934</td>
+<td>820.853030</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1962</td>
+<td>31.997</td>
+<td>10267083</td>
+<td>853.100710</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1967</td>
+<td>34.020</td>
+<td>11537966</td>
+<td>836.197138</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1972</td>
+<td>36.088</td>
+<td>13079460</td>
+<td>739.981106</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="making-new-columns-removing-columns" class="level3">
+<h3 class="anchored" data-anchor-id="making-new-columns-removing-columns">Making new columns, Removing columns</h3>
+<p>To create a new column you simply take the name of the dataframe, pass the string of the new columnn inside sqaure bracket, and assign values:</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>gapminder[<span class="st">"new_column"</span>] <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a></span>
+<span id="cb18-3"><a href="#cb18-3"></a>gapminder.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+<th data-quarto-table-cell-role="th">new_column</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1952</td>
+<td>28.801</td>
+<td>8425333</td>
+<td>779.445314</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1957</td>
+<td>30.332</td>
+<td>9240934</td>
+<td>820.853030</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1962</td>
+<td>31.997</td>
+<td>10267083</td>
+<td>853.100710</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1967</td>
+<td>34.020</td>
+<td>11537966</td>
+<td>836.197138</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1972</td>
+<td>36.088</td>
+<td>13079460</td>
+<td>739.981106</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>There is a new column added that has values of 20.</p>
+<p>In many cases, we may need to create a new column resulting from manipulating other columns. For example, we know that the GDP per capita is calculated from dividing the total GDP by a population. If we want to create a new column of the total GDP, we need to multiply GDP per capita by the population size of the country:</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>gapminder[<span class="st">"total_gdp"</span>] <span class="op">=</span> gapminder[<span class="st">"gdpPercap"</span>] <span class="op">*</span> gapminder[<span class="st">"pop"</span>]</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a>gapminder.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+<th data-quarto-table-cell-role="th">new_column</th>
+<th data-quarto-table-cell-role="th">total_gdp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1952</td>
+<td>28.801</td>
+<td>8425333</td>
+<td>779.445314</td>
+<td>20</td>
+<td>6.567086e+09</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1957</td>
+<td>30.332</td>
+<td>9240934</td>
+<td>820.853030</td>
+<td>20</td>
+<td>7.585449e+09</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1962</td>
+<td>31.997</td>
+<td>10267083</td>
+<td>853.100710</td>
+<td>20</td>
+<td>8.758856e+09</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1967</td>
+<td>34.020</td>
+<td>11537966</td>
+<td>836.197138</td>
+<td>20</td>
+<td>9.648014e+09</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1972</td>
+<td>36.088</td>
+<td>13079460</td>
+<td>739.981106</td>
+<td>20</td>
+<td>9.678553e+09</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>We have a new column (“total_gdp”) added to the <code>gapminder</code> DataFrame.</p>
+<p>You can remove columns by using `.drop() function:</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>gapminder <span class="op">=</span> gapminder.drop([<span class="st">"total_gdp"</span>, <span class="st">"new_column"</span>], axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a>gapminder.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
 </tr>
 </thead>
 <tbody>

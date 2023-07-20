@@ -172,9 +172,10 @@ gapminder = gapminder.drop(["total_gdp", "new_column"], axis = 1)
 gapminder.head()
 ```
 
-### Sort columns
 
-You can values b any column by using `.sort_values()` function:
+
+## Manipulate Rows
+You can rows by any column by using `.sort_values()` function:
 
 ```{python}
 gapminder.sort_values(["lifeExp"])
@@ -190,4 +191,80 @@ gapminder.sort_values(["pop"], ascending = False)
 
 You can see that China had the highest population.
 
-## Manipulate Rows
+
+You may be interested in observations/rows that meet certain conditions. For example, in the gapminder data, you may need to keel all observations from the African continent, and save as a new DataFrame called `gapminder_africa`:
+
+```{python}
+
+gapminder_africa = gapminder[gapminder["continent"] ==  "Africa"]
+
+gapminder_africa.head()
+```
+
+Filter all the observations that are in the year 2007 and ave it as `gapminder_2007:
+
+```{python}
+
+gapminder_2007 = gapminder[gapminder["year"] == 2007]
+
+gapminder_2007.head()
+```
+
+::: {.callout-note}
+Note that we are using the equal operator `==` operator not the assignment `=` operator to filter rows. Most beginners will confuse the two.
+:::
+
+when filtering rows, you are using boolean operators:
+
+- `==`: equal to
+
+- `!=`: not equal to
+
+- `>`: greater than
+
+- `<`: less than
+
+- `>=`: greater than or equal to
+
+- `<=`: less than or equal to
+
+You can also filter rows by combining 2 conditions. Let us say we want:
+
+- countries in Africa
+
+- the year 2007
+
+and save as `africa_2007`:
+
+```{python}
+africa_2007 = gapminder[(gapminder["continent"] == "Africa")  & (gapminder["year"] == 2007)]
+africa_2007.head()
+```
+
+Sometimes you may need to filter multiple rows, let say, more than 5 countries. It would be inconvinient to type `country == "..."` five times. This is where the `.isin()` function is useful; you pass the list of observations you want. We will work with with observations from the year 2007.
+
+```{python}
+gapminder_2007 = gapminder[gapminder["year"] == 2007]
+
+countries = gapminder_2007[gapminder_2007["country"].isin(["China", "Brazil", "India", "South Africa"])]
+
+countries.head()
+```
+
+You can also filter rows by using their index positions, let say, the 1st and 3rd rows:
+
+```{python}
+gapminder.iloc[[0, 4]]
+```
+
+You can also filter a range of rows For example, we may select top 10 countries with the highes population in 2007. So we will use the `gapminder_2007` DataFrame. You will need to arrange by population first
+
+```{python}
+gapminder_2007 = gapminder_2007.sort_values(["pop"], ascending = False)
+gapminder_2007.head()
+```
+You can see that observations are sorted in descending order from highest popultion to the lowest; now filter:
+
+```{python}
+gapminder_2007.iloc[0:10]
+```

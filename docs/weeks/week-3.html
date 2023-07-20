@@ -242,7 +242,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#rename-columns" id="toc-rename-columns" class="nav-link" data-scroll-target="#rename-columns">Rename columns</a></li>
   <li><a href="#making-new-columns-removing-columns" id="toc-making-new-columns-removing-columns" class="nav-link" data-scroll-target="#making-new-columns-removing-columns">Making new columns, Removing columns</a></li>
-  <li><a href="#sort-columns" id="toc-sort-columns" class="nav-link" data-scroll-target="#sort-columns">Sort columns</a></li>
   </ul></li>
   <li><a href="#manipulate-rows" id="toc-manipulate-rows" class="nav-link" data-scroll-target="#manipulate-rows">Manipulate Rows</a></li>
   </ul></li>
@@ -1120,9 +1119,10 @@ Name: country, Length: 1704, dtype: object</code></pre>
 </div>
 </div>
 </section>
-<section id="sort-columns" class="level3">
-<h3 class="anchored" data-anchor-id="sort-columns">Sort columns</h3>
-<p>You can values b any column by using <code>.sort_values()</code> function:</p>
+</section>
+<section id="manipulate-rows" class="level2">
+<h2 class="anchored" data-anchor-id="manipulate-rows">Manipulate Rows</h2>
+<p>You can rows by any column by using <code>.sort_values()</code> function:</p>
 <div class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>gapminder.sort_values([<span class="st">"lifeExp"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
@@ -1376,10 +1376,549 @@ Name: country, Length: 1704, dtype: object</code></pre>
 </div>
 </div>
 <p>You can see that China had the highest population.</p>
-</section>
-</section>
-<section id="manipulate-rows" class="level2">
-<h2 class="anchored" data-anchor-id="manipulate-rows">Manipulate Rows</h2>
+<p>You may be interested in observations/rows that meet certain conditions. For example, in the gapminder data, you may need to keel all observations from the African continent, and save as a new DataFrame called <code>gapminder_africa</code>:</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>gapminder_africa <span class="op">=</span> gapminder[gapminder[<span class="st">"continent"</span>] <span class="op">==</span>  <span class="st">"Africa"</span>]</span>
+<span id="cb23-2"><a href="#cb23-2"></a></span>
+<span id="cb23-3"><a href="#cb23-3"></a>gapminder_africa.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">24</td>
+<td>Algeria</td>
+<td>Africa</td>
+<td>1952</td>
+<td>43.077</td>
+<td>9279525</td>
+<td>2449.008185</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">25</td>
+<td>Algeria</td>
+<td>Africa</td>
+<td>1957</td>
+<td>45.685</td>
+<td>10270856</td>
+<td>3013.976023</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">26</td>
+<td>Algeria</td>
+<td>Africa</td>
+<td>1962</td>
+<td>48.303</td>
+<td>11000948</td>
+<td>2550.816880</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">27</td>
+<td>Algeria</td>
+<td>Africa</td>
+<td>1967</td>
+<td>51.407</td>
+<td>12760499</td>
+<td>3246.991771</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">28</td>
+<td>Algeria</td>
+<td>Africa</td>
+<td>1972</td>
+<td>54.518</td>
+<td>14760787</td>
+<td>4182.663766</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Filter all the observations that are in the year 2007 and ave it as `gapminder_2007:</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a>gapminder_2007 <span class="op">=</span> gapminder[gapminder[<span class="st">"year"</span>] <span class="op">==</span> <span class="dv">2007</span>]</span>
+<span id="cb24-2"><a href="#cb24-2"></a></span>
+<span id="cb24-3"><a href="#cb24-3"></a>gapminder_2007.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>2007</td>
+<td>43.828</td>
+<td>31889923</td>
+<td>974.580338</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">23</td>
+<td>Albania</td>
+<td>Europe</td>
+<td>2007</td>
+<td>76.423</td>
+<td>3600523</td>
+<td>5937.029526</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">35</td>
+<td>Algeria</td>
+<td>Africa</td>
+<td>2007</td>
+<td>72.301</td>
+<td>33333216</td>
+<td>6223.367465</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">47</td>
+<td>Angola</td>
+<td>Africa</td>
+<td>2007</td>
+<td>42.731</td>
+<td>12420476</td>
+<td>4797.231267</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">59</td>
+<td>Argentina</td>
+<td>Americas</td>
+<td>2007</td>
+<td>75.320</td>
+<td>40301927</td>
+<td>12779.379640</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that we are using the equal operator <code>==</code> operator not the assignment <code>=</code> operator to filter rows. Most beginners will confuse the two.</p>
+</div>
+</div>
+<p>when filtering rows, you are using boolean operators:</p>
+<ul>
+<li><p><code>==</code>: equal to</p></li>
+<li><p><code>!=</code>: not equal to</p></li>
+<li><p><code>&gt;</code>: greater than</p></li>
+<li><p><code>&lt;</code>: less than</p></li>
+<li><p><code>&gt;=</code>: greater than or equal to</p></li>
+<li><p><code>&lt;=</code>: less than or equal to</p></li>
+</ul>
+<p>You can also filter rows by combining 2 conditions. Let us say we want:</p>
+<ul>
+<li><p>countries in Africa</p></li>
+<li><p>the year 2007</p></li>
+</ul>
+<p>and save as <code>africa_2007</code>:</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>africa_2007 <span class="op">=</span> gapminder[(gapminder[<span class="st">"continent"</span>] <span class="op">==</span> <span class="st">"Africa"</span>)  <span class="op">&amp;</span> (gapminder[<span class="st">"year"</span>] <span class="op">==</span> <span class="dv">2007</span>)]</span>
+<span id="cb25-2"><a href="#cb25-2"></a>africa_2007.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">35</td>
+<td>Algeria</td>
+<td>Africa</td>
+<td>2007</td>
+<td>72.301</td>
+<td>33333216</td>
+<td>6223.367465</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">47</td>
+<td>Angola</td>
+<td>Africa</td>
+<td>2007</td>
+<td>42.731</td>
+<td>12420476</td>
+<td>4797.231267</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">131</td>
+<td>Benin</td>
+<td>Africa</td>
+<td>2007</td>
+<td>56.728</td>
+<td>8078314</td>
+<td>1441.284873</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">167</td>
+<td>Botswana</td>
+<td>Africa</td>
+<td>2007</td>
+<td>50.728</td>
+<td>1639131</td>
+<td>12569.851770</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">203</td>
+<td>Burkina Faso</td>
+<td>Africa</td>
+<td>2007</td>
+<td>52.295</td>
+<td>14326203</td>
+<td>1217.032994</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Sometimes you may need to filter multiple rows, let say, more than 5 countries. It would be inconvinient to type <code>country == "..."</code> five times. This is where the <code>.isin()</code> function is useful; you pass the list of observations you want. We will work with with observations from the year 2007.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>gapminder_2007 <span class="op">=</span> gapminder[gapminder[<span class="st">"year"</span>] <span class="op">==</span> <span class="dv">2007</span>]</span>
+<span id="cb26-2"><a href="#cb26-2"></a></span>
+<span id="cb26-3"><a href="#cb26-3"></a>countries <span class="op">=</span> gapminder_2007[gapminder_2007[<span class="st">"country"</span>].isin([<span class="st">"China"</span>, <span class="st">"Brazil"</span>, <span class="st">"India"</span>, <span class="st">"South Africa"</span>])]</span>
+<span id="cb26-4"><a href="#cb26-4"></a></span>
+<span id="cb26-5"><a href="#cb26-5"></a>countries.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">179</td>
+<td>Brazil</td>
+<td>Americas</td>
+<td>2007</td>
+<td>72.390</td>
+<td>190010647</td>
+<td>9065.800825</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">299</td>
+<td>China</td>
+<td>Asia</td>
+<td>2007</td>
+<td>72.961</td>
+<td>1318683096</td>
+<td>4959.114854</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">707</td>
+<td>India</td>
+<td>Asia</td>
+<td>2007</td>
+<td>64.698</td>
+<td>1110396331</td>
+<td>2452.210407</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1415</td>
+<td>South Africa</td>
+<td>Africa</td>
+<td>2007</td>
+<td>49.339</td>
+<td>43997828</td>
+<td>9269.657808</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>You can also filter rows by using their index positions, let say, the 1st and 3rd rows:</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a>gapminder.iloc[[<span class="dv">0</span>, <span class="dv">4</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1952</td>
+<td>28.801</td>
+<td>8425333</td>
+<td>779.445314</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1972</td>
+<td>36.088</td>
+<td>13079460</td>
+<td>739.981106</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>You can also filter a range of rows For example, we may select top 10 countries with the highes population in 2007. So we will use the <code>gapminder_2007</code> DataFrame. You will need to arrange by population first</p>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a>gapminder_2007 <span class="op">=</span> gapminder_2007.sort_values([<span class="st">"pop"</span>], ascending <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb28-2"><a href="#cb28-2"></a>gapminder_2007.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">299</td>
+<td>China</td>
+<td>Asia</td>
+<td>2007</td>
+<td>72.961</td>
+<td>1318683096</td>
+<td>4959.114854</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">707</td>
+<td>India</td>
+<td>Asia</td>
+<td>2007</td>
+<td>64.698</td>
+<td>1110396331</td>
+<td>2452.210407</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1619</td>
+<td>United States</td>
+<td>Americas</td>
+<td>2007</td>
+<td>78.242</td>
+<td>301139947</td>
+<td>42951.653090</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">719</td>
+<td>Indonesia</td>
+<td>Asia</td>
+<td>2007</td>
+<td>70.650</td>
+<td>223547000</td>
+<td>3540.651564</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">179</td>
+<td>Brazil</td>
+<td>Americas</td>
+<td>2007</td>
+<td>72.390</td>
+<td>190010647</td>
+<td>9065.800825</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>You can see that observations are sorted in descending order from highest popultion to the lowest; now filter:</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1"></a>gapminder_2007.iloc[<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">299</td>
+<td>China</td>
+<td>Asia</td>
+<td>2007</td>
+<td>72.961</td>
+<td>1318683096</td>
+<td>4959.114854</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">707</td>
+<td>India</td>
+<td>Asia</td>
+<td>2007</td>
+<td>64.698</td>
+<td>1110396331</td>
+<td>2452.210407</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1619</td>
+<td>United States</td>
+<td>Americas</td>
+<td>2007</td>
+<td>78.242</td>
+<td>301139947</td>
+<td>42951.653090</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">719</td>
+<td>Indonesia</td>
+<td>Asia</td>
+<td>2007</td>
+<td>70.650</td>
+<td>223547000</td>
+<td>3540.651564</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">179</td>
+<td>Brazil</td>
+<td>Americas</td>
+<td>2007</td>
+<td>72.390</td>
+<td>190010647</td>
+<td>9065.800825</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1175</td>
+<td>Pakistan</td>
+<td>Asia</td>
+<td>2007</td>
+<td>65.483</td>
+<td>169270617</td>
+<td>2605.947580</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">107</td>
+<td>Bangladesh</td>
+<td>Asia</td>
+<td>2007</td>
+<td>64.062</td>
+<td>150448339</td>
+<td>1391.253792</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1139</td>
+<td>Nigeria</td>
+<td>Africa</td>
+<td>2007</td>
+<td>46.859</td>
+<td>135031164</td>
+<td>2013.977305</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">803</td>
+<td>Japan</td>
+<td>Asia</td>
+<td>2007</td>
+<td>82.603</td>
+<td>127467972</td>
+<td>31656.068060</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">995</td>
+<td>Mexico</td>
+<td>Americas</td>
+<td>2007</td>
+<td>76.195</td>
+<td>108700891</td>
+<td>11977.574960</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 
 
 </section>

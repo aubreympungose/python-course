@@ -268,3 +268,90 @@ You can see that observations are sorted in descending order from highest popult
 ```{python}
 gapminder_2007.iloc[0:10]
 ```
+
+
+Another way of filtering rows is to use the `.query()` method. This is how you would filter observations from the African continent:
+
+```{python}
+gapminder_africa = gapminder_2007.query("continent == 'Africa'")
+gapminder_africa.head()
+```
+
+Filter observations where life expectancy is equal to or greater 80 and the year is 2007; assign the results to `high_life_expect`:
+
+```{python}
+high_life_expect = gapminder.query("lifeExp >= 80 and year == 2007")
+
+high_life_expect.head()
+```
+
+
+## Summary statistics and aggregating
+
+One of the important task in data science is to explore the data using summary statistics. There are various methods used to summarise data, including:
+
+| Summary stat                                  | pandas function |
+|-----------------------------------------------|-----------------|
+| Mean/average                                  | `.mean()`       |
+| Median/mid-point                              | `.median()`     |
+| Sum of values                                 | `.sum()`        |
+| Minimum                                       | `.min()`        |
+| Maximum                                       | `.max()`        |
+| Standard deviation: spread/dispersion of data | `.std()`        |
+| Count or total number of observations         | `.count()`      |
+
+
+Let explore these functions. What is the average/mean life expectancy of all countries?
+
+```{python}
+gapminder["lifeExp"].mean()
+```
+
+What is the median GDP per capita?
+
+```{python}
+gapminder["gdpPercap"].median()
+```
+
+Find the minimum population:
+
+```{python}
+gapminder["pop"].min()
+```
+
+You can experiment with other functions listed in the above table.
+
+
+### Grouping
+
+In many cases, you may need to get summary statistics by a category or group. In above examples, although it is important to get the mean population of the world, but this tells us little about variaion in different regions. pandas has `.groupby()` function that group observations into categories. For example, you may be interested on finding the **average the GDP per capita** in each **continent**. Here you would use the `.groupby()` function, passing the "continent" column inside and follow by the summary statistics function:
+
+```{python}
+gapminder.groupby("continent")["gdpPercap"].mean()
+```
+
+The result show mean wealth (GDP per capita) by a continent. Wouldn't be nice to sort these statistics from highest to lowest?
+
+```{python}
+gapminder.groupby("continent")["gdpPercap"].mean().sort_values(ascending = False)
+```
+
+Now We can see that Oceania has the highest average wealth and Africa has the lowest. 
+
+Sometimes you may need to find multiple summary statistics: mean, median, standard deviation, minimum,and maximum at the same time. `.agg()` function is able to do this:
+
+```{python}
+gapminder.groupby("continent")["gdpPercap"].agg(["mean", "median", "std", "min", "max"])
+```
+What if you want to find a summary stat of multiple columns? For example, find the mean pf these columns per continent: life expectancy, population, GDP per capita:
+
+
+```{python}
+gapminder.groupby("continent").agg(
+    mean_life_expect = ("lifeExp", "mean"),
+    mean_pop=("pop", "mean"),
+    mean_gdp_pc = ("gdpPercap", "mean")
+)
+```
+
+In this chapter you have learned about different ways of manipulating DataFrames. Next, we go to advanced methods.

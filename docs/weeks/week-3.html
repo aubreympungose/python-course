@@ -242,7 +242,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#rename-columns" id="toc-rename-columns" class="nav-link" data-scroll-target="#rename-columns">Rename columns</a></li>
   <li><a href="#making-new-columns-removing-columns" id="toc-making-new-columns-removing-columns" class="nav-link" data-scroll-target="#making-new-columns-removing-columns">Making new columns, Removing columns</a></li>
+  <li><a href="#sort-columns" id="toc-sort-columns" class="nav-link" data-scroll-target="#sort-columns">Sort columns</a></li>
   </ul></li>
+  <li><a href="#manipulate-rows" id="toc-manipulate-rows" class="nav-link" data-scroll-target="#manipulate-rows">Manipulate Rows</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="https://aubreympungose.github.io/python_course/edit/main/weeks/week-3.qmd" class="toc-action">Edit this page</a></p><p><a href="https://aubreympungose.github.io/python_course/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -284,7 +286,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>datetime64: date and time</p></li>
 <li><p>category: catogories or factors (e.g.&nbsp;gender = male, female; race = black, white, …)</p></li>
 <li><p>bool: True or False</p></li>
-<li><p>object: string and mixed data types</p></li>
+<li><p>object: string</p></li>
 </ul>
 <p>According to Hadley Wickman, a DataFrame should be in a <em>tidy</em> format:</p>
 <blockquote class="blockquote">
@@ -1117,9 +1119,269 @@ Name: country, Length: 1704, dtype: object</code></pre>
 </div>
 </div>
 </div>
-
-
 </section>
+<section id="sort-columns" class="level3">
+<h3 class="anchored" data-anchor-id="sort-columns">Sort columns</h3>
+<p>You can values b any column by using <code>.sort_values()</code> function:</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>gapminder.sort_values([<span class="st">"lifeExp"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1292</td>
+<td>Rwanda</td>
+<td>Africa</td>
+<td>1992</td>
+<td>23.599</td>
+<td>7290203</td>
+<td>737.068595</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>1952</td>
+<td>28.801</td>
+<td>8425333</td>
+<td>779.445314</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">552</td>
+<td>Gambia</td>
+<td>Africa</td>
+<td>1952</td>
+<td>30.000</td>
+<td>284320</td>
+<td>485.230659</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">36</td>
+<td>Angola</td>
+<td>Africa</td>
+<td>1952</td>
+<td>30.015</td>
+<td>4232095</td>
+<td>3520.610273</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1344</td>
+<td>Sierra Leone</td>
+<td>Africa</td>
+<td>1952</td>
+<td>30.331</td>
+<td>2143249</td>
+<td>879.787736</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1487</td>
+<td>Switzerland</td>
+<td>Europe</td>
+<td>2007</td>
+<td>81.701</td>
+<td>7554661</td>
+<td>37506.419070</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">695</td>
+<td>Iceland</td>
+<td>Europe</td>
+<td>2007</td>
+<td>81.757</td>
+<td>301931</td>
+<td>36180.789190</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">802</td>
+<td>Japan</td>
+<td>Asia</td>
+<td>2002</td>
+<td>82.000</td>
+<td>127065841</td>
+<td>28604.591900</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">671</td>
+<td>Hong Kong, China</td>
+<td>Asia</td>
+<td>2007</td>
+<td>82.208</td>
+<td>6980412</td>
+<td>39724.978670</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">803</td>
+<td>Japan</td>
+<td>Asia</td>
+<td>2007</td>
+<td>82.603</td>
+<td>127467972</td>
+<td>31656.068060</td>
+</tr>
+</tbody>
+</table>
+
+<p>1704 rows × 6 columns</p>
+</div>
+</div>
+</div>
+<p>You can see that Rwanda had the lowest life expectancy.</p>
+<p>To sort values into descending order (highest to lowest), you pass <code>ascending = False</code>:</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>gapminder.sort_values([<span class="st">"pop"</span>], ascending <span class="op">=</span> <span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">continent</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">lifeExp</th>
+<th data-quarto-table-cell-role="th">pop</th>
+<th data-quarto-table-cell-role="th">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">299</td>
+<td>China</td>
+<td>Asia</td>
+<td>2007</td>
+<td>72.961</td>
+<td>1318683096</td>
+<td>4959.114854</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">298</td>
+<td>China</td>
+<td>Asia</td>
+<td>2002</td>
+<td>72.028</td>
+<td>1280400000</td>
+<td>3119.280896</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">297</td>
+<td>China</td>
+<td>Asia</td>
+<td>1997</td>
+<td>70.426</td>
+<td>1230075000</td>
+<td>2289.234136</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">296</td>
+<td>China</td>
+<td>Asia</td>
+<td>1992</td>
+<td>68.690</td>
+<td>1164970000</td>
+<td>1655.784158</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">707</td>
+<td>India</td>
+<td>Asia</td>
+<td>2007</td>
+<td>64.698</td>
+<td>1110396331</td>
+<td>2452.210407</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1299</td>
+<td>Sao Tome and Principe</td>
+<td>Africa</td>
+<td>1967</td>
+<td>54.425</td>
+<td>70787</td>
+<td>1384.840593</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1298</td>
+<td>Sao Tome and Principe</td>
+<td>Africa</td>
+<td>1962</td>
+<td>51.893</td>
+<td>65345</td>
+<td>1071.551119</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">420</td>
+<td>Djibouti</td>
+<td>Africa</td>
+<td>1952</td>
+<td>34.812</td>
+<td>63149</td>
+<td>2669.529475</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1297</td>
+<td>Sao Tome and Principe</td>
+<td>Africa</td>
+<td>1957</td>
+<td>48.945</td>
+<td>61325</td>
+<td>860.736903</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1296</td>
+<td>Sao Tome and Principe</td>
+<td>Africa</td>
+<td>1952</td>
+<td>46.471</td>
+<td>60011</td>
+<td>879.583586</td>
+</tr>
+</tbody>
+</table>
+
+<p>1704 rows × 6 columns</p>
+</div>
+</div>
+</div>
+<p>You can see that China had the highest population.</p>
+</section>
+</section>
+<section id="manipulate-rows" class="level2">
+<h2 class="anchored" data-anchor-id="manipulate-rows">Manipulate Rows</h2>
+
+
 </section>
 </section>
 

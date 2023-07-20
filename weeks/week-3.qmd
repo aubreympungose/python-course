@@ -28,7 +28,7 @@ Dataframes, as we saw [the previous section](week-2.qmd), is a tabular data form
 
 - bool: True or False
 
-- object: string and mixed data types
+- object: string 
 
 
 According to Hadley Wickman, a DataFrame should be in a *tidy* format:
@@ -171,3 +171,23 @@ gapminder = gapminder.drop(["total_gdp", "new_column"], axis = 1)
 
 gapminder.head()
 ```
+
+### Sort columns
+
+You can values b any column by using `.sort_values()` function:
+
+```{python}
+gapminder.sort_values(["lifeExp"])
+```
+
+You can see that Rwanda had the lowest life expectancy. 
+
+To sort values into descending order (highest to lowest), you pass `ascending = False`:
+
+```{python}
+gapminder.sort_values(["pop"], ascending = False)
+```
+
+You can see that China had the highest population.
+
+## Manipulate Rows
